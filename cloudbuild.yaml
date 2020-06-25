@@ -1,0 +1,9 @@
+steps:
+  - name: gcr.io/einride/cloud-builder
+    args: ["/cloud-builder/git-init.sh"]
+    env:
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - 'REPO_NAME=$REPO_NAME'
+  
+  - name: gcr.io/einride/cloud-builder
+    args: ["make"]
