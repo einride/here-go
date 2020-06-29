@@ -1,5 +1,7 @@
 run:
   timeout: 5m
+  skip-dirs:
+    - pkg/openapi/.*
 
 linters:
   enable-all: true
