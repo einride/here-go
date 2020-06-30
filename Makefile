@@ -15,13 +15,13 @@ include tools/git-verify-nodiff/rules.mk
 include tools/golangci-lint/rules.mk
 include tools/goreview/rules.mk
 
-openapi_base_path := $(PWD)/pkg/openapi
+openapi_base_path := $(PWD)/pkg/routing/v8/openapi
 
 .PHONY: openapi-generate
 openapi-generate:
 	# Routing v8
 	docker run --rm \
-		-v $(openapi_base_path)/routing/v8:/gen \
+		-v $(openapi_base_path):/gen \
 		-u $(shell id -u) \
 		-e "JAVA_OPTS=-Dmodels -DmodelDocs=false -Dapis -DapiDocs=false -DsupportingFiles=client.go,configuration.go,response.go" \
 		openapitools/openapi-generator-cli:v4.3.1 generate \
@@ -32,9 +32,9 @@ openapi-generate:
 		-o /gen \
 		--http-user-agent "einride/here-go"
 	# TODO: Find a way to not generate these folders
-	rm -rf $(openapi_base_path)/routing/v8/api
-	rm -rf $(openapi_base_path)/routing/v8/.openapi-generator
-	rm -rf $(openapi_base_path)/routing/v8/.openapi-generator-ignore
+	rm -rf $(openapi_base_path)/api
+	rm -rf $(openapi_base_path)/.openapi-generator
+	rm -rf $(openapi_base_path)/.openapi-generator-ignore
 
 # go-build: ensure the library can be cross-compiled to supported OSes
 .PHONY: go-build
@@ -49,7 +49,7 @@ go-lint: $(golangci_lint)
 
 .PHONY: go-review
 go-review: $(goreview)
-	$(goreview) -c 1 ./pkg/routing/...
+	$(goreview) -c 1 ./pkg/routing/v8
 
 # go-test: run Go test suite
 .PHONY: go-test
