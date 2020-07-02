@@ -17,3 +17,4 @@ linters:
     - nestif # allow deep nesting
     - unparam # allow constant parameters
     - goerr113 # allow "dynamic" errors
+    - maligned # pre-optimization
