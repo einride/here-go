@@ -157,12 +157,24 @@ type TransportModeType int
 const (
 	// Route calculation for cars
 	TransportModeCar TransportModeType = iota
+	// Route calculation for HOV (high-occupancy vehicle) cars
+	TransportModeCarHOV
 	// Route calculation for a pedestrian. As one effect, maneuvers will be optimized for walking,
 	// that is segments will consider actions relevant for pedestrians and maneuver instructions will
 	// contain texts suitable for a walking person. This mode disregards any traffic information.
 	TransportModePedestrian
-	// Route calculation for HOV (high-occupancy vehicle) cars
-	TransportModeCarHOV
+	// Route calculation using public transport lines and walking parts to get to stations.
+	// It is based on static map data, so the results are not aligned with officially published
+	// timetable.
+	TransportModePublicTransport
+	// Route calculation using public transport lines and walking parts to get to stations.
+	// This mode uses additional officially published timetable information to provide most precise
+	// routes and times. In case the timetable data is unavailable, the service will use estimated
+	// results based on static map data (same as from publicTransport mode).
+	TransportModePublicTransportTimeTable
+	// Route calculation for trucks. This mode considers truck limitations on links and uses different
+	// speed assumptions when calculating the route.
+	TransportModeTruck
 	// Route calculation for bicycles. This mode uses the pedestrian road network, but uses different
 	// speeds based on each road's suitability for cycling. Pedestrian roads that are also open for cars
 	// in the travel direction are considered open for cycling, as are pedestrian roads located in parks.
@@ -183,6 +195,12 @@ func (t TransportModeType) String() string {
 		out = "carHOV"
 	case TransportModeBicycle:
 		out = "bicycle"
+	case TransportModePublicTransport:
+		out = "publicTransport"
+	case TransportModePublicTransportTimeTable:
+		out = "publicTransportTimeTable"
+	case TransportModeTruck:
+		out = "truck"
 	}
 	return out
 }
@@ -225,6 +243,25 @@ func (t TrafficModeType) String() string {
 		out = "disabled"
 	case TrafficModeTypeDefault:
 		out = "default"
+	}
+	return out
+}
+
+type TruckType int
+
+const (
+	TruckTypeInvalid = iota
+	TruckTypeTruck
+	TruckTypeTractorTruck
+)
+
+func (t TruckType) String() string {
+	var out string
+	switch t {
+	case TruckTypeTruck:
+		out = "truck"
+	case TruckTypeTractorTruck:
+		out = "tractorTruck"
 	}
 	return out
 }
