@@ -265,3 +265,50 @@ func (t TruckType) String() string {
 	}
 	return out
 }
+
+// RouteRepresentationMode defines which parts of the route are returned by services for standard use cases.
+type RouteRepresentationMode int
+
+const (
+	// RouteRepresentationModeOverview only returns the Route and the RouteSummary object.
+	RouteRepresentationModeOverview RouteRepresentationMode = iota
+	// RouteRepresentationModeDisplay that allows to show the route with all maneuvers.
+	// Links will not be included in the response.
+	RouteRepresentationModeDisplay
+	// RouteRepresentationModeDragNDrop to be used during drag and drop (re-routing) actions.
+	// The response will only contain the shape of the route restricted to the view bounds provided in the
+	// representation options..
+	RouteRepresentationModeDragNDrop
+	// RouteRepresentationModeNavigation to provide all information necessary to support a navigation device.
+	// This mode activates the most extensive data response as all link information will be included in the
+	// response to allow a detailed display while navigating.
+	// RouteId will not be calculated in this mode however, unless it is additionally requested..
+	RouteRepresentationModeNavigation
+	// RouteRepresentationModeLinkPaging that will be used when incrementally loading links
+	// while navigating along the route.
+	// The response will be limited to link information..
+	RouteRepresentationModeLinkPaging
+	// RouteRepresentationModeTurnByTurn mode to provide all information necessary to support turn by turn.
+	// This mode activates all data needed for navigation excluding any redundancies.
+	// RouteId will not be calculated in this mode however, unless it is additionally requested..
+	RouteRepresentationModeTurnByTurn
+)
+
+func (r RouteRepresentationMode) String() string {
+	switch r {
+	case RouteRepresentationModeOverview:
+		return "overview"
+	case RouteRepresentationModeDisplay:
+		return "display"
+	case RouteRepresentationModeDragNDrop:
+		return "dragNDrop"
+	case RouteRepresentationModeNavigation:
+		return "navigation"
+	case RouteRepresentationModeLinkPaging:
+		return "linkPaging"
+	case RouteRepresentationModeTurnByTurn:
+		return "turnByTurn"
+	default:
+		return ""
+	}
+}
