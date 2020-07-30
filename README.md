@@ -12,51 +12,58 @@ A few non-generated types exist to improve usability of the client
 ## Usage
 
 ```go
+package main
+
 import (
-    "context"
+	"context"
 	"fmt"
 
 	"github.com/antihax/optional"
-    routingv8 "github.com/einride/here-go/pkg/openapi/routing/v8"
-    v8types "github.com/einride/here-go/pkg/routing/v8"
-    
+	routingv8 "github.com/einride/here-go/pkg/openapi/routing/v8"
+	v8types "github.com/einride/here-go/pkg/routing/v8"
 )
 
 func main() {
-    // Using API Key
-    auth := context.WithValue(context.Background(), routingv8.ContextAPIKey, routingv8.APIKey{
-        Key: "....your api key here ....",
-    })
-    // Construct a new client
-    client := routingv8.NewAPIClient(routingv8.NewConfiguration())
+	// Using API Key
+	auth := context.WithValue(context.Background(), routingv8.ContextAPIKey, routingv8.APIKey{
+		Key: "....your api key here ....",
+	})
+	// Construct a new client
+	client := routingv8.NewAPIClient(routingv8.NewConfiguration())
 
-    // v8types.Waypoint is not a generated type
-    // Einride Gothenburg
+	// v8types.Waypoint is not a generated type
+	// Einride Gothenburg
 	origin := v8types.Waypoint{
 		Place: v8types.LatLong{
 			Lat:  57.707752,
 			Long: 11.949767,
 		},
-    }
-    // Einride Stockholm
+	}
+	// Einride Stockholm
 	destination := v8types.Waypoint{
 		Place: v8types.LatLong{
 			Lat:  59.337492,
 			Long: 18.063672,
 		},
 	}
-    // Let's request the Travel Summary back in the 
-    returnVals := optional.NewInterface([]routingv8.Return{routingv8.RETURN_TRAVEL_SUMMARY})
-    
-    // Calculate route by Truck
-    resp, _, err := client.RoutingApi.CalculateRoutes(auth, routingv8.ROUTERMODE_TRUCK, origin.String(), destination.String(), &routingv8.CalculateRoutesOpts{
-        Return_: returnVals,
-    })
-    if err != nil {
-        panic(err)
-    }
+	// Let's request the Travel Summary back in the
+	returnVals := optional.NewInterface([]routingv8.Return{routingv8.RETURN_TRAVEL_SUMMARY})
 
-    fmt.Printf("Distance: %d meters\n", resp.Routes[0].Sections[0].TravelSummary.Length)
+	// Calculate route by Truck
+	resp, _, err := client.RoutingApi.CalculateRoutes(
+		auth,
+		routingv8.ROUTERMODE_TRUCK,
+		origin.String(),
+		destination.String(),
+		&routingv8.CalculateRoutesOpts{
+			Return_: returnVals,
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Distance: %d meters\n", resp.Routes[0].Sections[0].TravelSummary.Length)
 }
 ```
 
