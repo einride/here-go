@@ -312,3 +312,33 @@ func (r RouteRepresentationMode) String() string {
 		return ""
 	}
 }
+
+// MatrixRouteSummaryAttribute defines which attributes are included in the response as part of the data
+// representation of the matrix entries summaries. Defaults to cost factor.
+type MatrixRouteSummaryAttribute int
+
+const (
+	// Indicates whether the travel time information should be provided in summary entries.
+	MatrixRouteSummaryAttributeTravelTime MatrixRouteSummaryAttribute = iota
+	// Indicates whether the CostFactor information should be returned in summary entries.
+	MatrixRouteSummaryAttributeCostFactor
+	// Indicates whether distance information should be returned in summary entries.
+	MatrixRouteSummaryAttributeDistance
+	// Indicates whether RouteId shall be calculated and provided in summary entries.
+	MatrixRouteSummaryAttributeRouteID
+)
+
+func (m MatrixRouteSummaryAttribute) String() string {
+	switch m {
+	case MatrixRouteSummaryAttributeTravelTime:
+		return "tt"
+	case MatrixRouteSummaryAttributeCostFactor:
+		return "cf"
+	case MatrixRouteSummaryAttributeDistance:
+		return "di"
+	case MatrixRouteSummaryAttributeRouteID:
+		return "ri"
+	default:
+		return ""
+	}
+}
