@@ -45,7 +45,7 @@ type CalculateRouteRequest struct {
 	Length float64
 }
 
-func (r *CalculateRouteRequest) Encode() string {
+func (r *CalculateRouteRequest) QueryString() string {
 	vals := url.Values{}
 	for i, wp := range r.Waypoints {
 		vals.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
@@ -105,12 +105,11 @@ func (s *RouteService) CalculateRoute(
 	ctx context.Context,
 	req *CalculateRouteRequest,
 ) (*CalculateRouteResponse, error) {
-	params := req.Encode()
 	u, err := s.URL.Parse("calculateroute.json")
 	if err != nil {
 		return nil, err
 	}
-	r, err := s.client.NewRequest(ctx, u, http.MethodGet, params, nil)
+	r, err := s.client.NewRequest(ctx, u, http.MethodGet, req.QueryString(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("unable to create get request: %v", err)
 	}

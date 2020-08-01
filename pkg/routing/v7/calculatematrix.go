@@ -49,7 +49,7 @@ type CalculateMatrixRequest struct {
 	Length float64
 }
 
-func (r *CalculateMatrixRequest) Encode() string {
+func (r *CalculateMatrixRequest) QueryString() string {
 	var values url.Values
 	for i, wp := range r.StartWaypoints {
 		values.Add(fmt.Sprintf("start%d", i), wp.QueryString())
@@ -160,12 +160,11 @@ func (s *RouteService) CalculateMatrix(
 	ctx context.Context,
 	req *CalculateMatrixRequest,
 ) (*CalculateMatrixResponse, error) {
-	params := req.Encode()
 	u, err := s.URL.Parse("calculatematrix.json")
 	if err != nil {
 		return nil, err
 	}
-	r, err := s.client.NewRequest(ctx, u, http.MethodGet, params, nil)
+	r, err := s.client.NewRequest(ctx, u, http.MethodGet, req.QueryString(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("unable to create get request: %v", err)
 	}

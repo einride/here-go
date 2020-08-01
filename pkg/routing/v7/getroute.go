@@ -29,7 +29,7 @@ type GetRouteResponse struct {
 	Route Route `json:"route,omitempty"`
 }
 
-func (r *GetRouteRequest) Encode() string {
+func (r *GetRouteRequest) QueryString() string {
 	var vals url.Values
 	for i, wp := range r.Waypoints {
 		vals.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
@@ -55,7 +55,7 @@ func (s *RouteService) GetRoute(
 	if err != nil {
 		return nil, err
 	}
-	r, err := s.client.NewRequest(ctx, u, http.MethodGet, req.Encode(), nil)
+	r, err := s.client.NewRequest(ctx, u, http.MethodGet, req.QueryString(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("unable to create get request: %v", err)
 	}
