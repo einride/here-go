@@ -117,10 +117,10 @@ type RouteMatrixEntry struct {
 
 // MatrixRouteSummary is used in calculate matrix responses.
 type MatrixRouteSummary struct {
-	// Distance indicates total travel distance for the route, in meters.
-	Distance float64 `json:"distance,omitempty"`
-	// Total travel time in seconds optionally considering traffic depending on the request parameters.
-	TravelTime float64 `json:"travelTime,omitempty"`
+	// DistanceMeters indicates total travel distance for the route, in meters.
+	DistanceMeters float64 `json:"distance,omitempty"`
+	// Total travel time optionally considering traffic depending on the request parameters.
+	TravelTime Duration `json:"travelTime,omitempty"`
 	// CostFactor is an internal cost used for calculating the route.
 	// This value is based on the objective function of the routing engine and related to the distance or time,
 	// depending on the request settings (such as pedestrian versus car routes).

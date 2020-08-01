@@ -16,19 +16,19 @@ type Route struct {
 
 type RouteSummary struct {
 	// Indicates total travel distance for the route, in meters.
-	Distance float64 `json:"distance,omitempty"`
-	// Contains the travel time estimate in seconds for this element, considering traffic
+	DistanceMeters float64 `json:"distance,omitempty"`
+	// Contains the travel time estimate for this element, considering traffic
 	// and transport mode. Based on the TrafficSpeed. The service may also account for additional
 	// time penalties, so this may be greater than the element length divided by the TrafficSpeed.
-	TrafficTime float64 `json:"traffictime,omitempty"`
-	// Contains the travel time estimate in seconds for this element, considering transport mode but
+	TrafficTime Duration `json:"traffictime,omitempty"`
+	// Contains the travel time estimate for this element, considering transport mode but
 	// not traffic conditions. Based on the BaseSpeed. The service may also account for additional
 	// time penalties, therefore this may be greater than the element length divided by the BaseSpeed.
-	BaseTime float64 `json:"baseTime,omitempty"`
+	BaseTime Duration `json:"baseTime,omitempty"`
 	// Special link characteristics (like ferry or motorway usage) which are covered by the route.
 	Flags []RouteLinkFlag `json:"flags,omitempty"`
-	// Total travel time in seconds optionally considering traffic depending on the request parameters.
-	TravelTime float64 `json:"travelTime,omitempty"`
+	// Total travel time optionally considering traffic depending on the request parameters.
+	TravelTime Duration `json:"travelTime,omitempty"`
 	// Textual description of route summary. Supported languages are US and GB English, French, German,
 	// Italian, Polish, Portuguese, Spanish and Traditional Chinese. Element is not provided in case of
 	// other languages.
@@ -51,7 +51,7 @@ type RouteLeg struct {
 	// Links is a list of all links which are included in this portion of the route.
 	Links []RouteLink `json:"link,omitempty"`
 
-	// BaseTime is the estimated time in seconds spent on this leg, without considering traffic conditions.
+	// BaseTime is the estimated time spent on this leg, without considering traffic conditions.
 	// The service may also account for additional time penalties, therefore this may be greater than the leg length
 	// divided by the base speed.
 	BaseTime Duration `json:"baseTime,omitempty"`
