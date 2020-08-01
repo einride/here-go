@@ -8,10 +8,6 @@ import (
 	"strconv"
 )
 
-// RouteService handles communication with the route related methods of the
-// v7 HERE API.
-type RouteService service
-
 type CalculateRouteRequest struct {
 	// List of waypoints that define a route. The first element marks the startpoint,
 	// the last the endpoint. Waypoints in between are interpreted as via points.
@@ -83,6 +79,24 @@ func (r *CalculateRouteRequest) Encode() string {
 		vals.Add("length", strconv.FormatFloat(r.Length, 'f', -1, 64))
 	}
 	return vals.Encode()
+}
+
+// CalculateRouteResponse contains response data, structured to match a particular request for the CalculateRoute
+// operation.
+//
+// The Route element may appear more than once in the response if multiple routes are available between the start and
+// end points.
+//
+//Refer to CalculateRouteRequest, described in Calculate Route for details on associated request elements.
+type CalculateRouteResponse struct {
+	// MetaInfo provides details about the request itself, such as the time at which it was processed, a request id, or
+	// the map version on which the calculation was based.
+	MetaInfo RouteResponseMetaInfo `json:"metaInfo,omitempty"`
+	// Routes contains the calculated path across a navigable link network, as specified in the request.
+	// Routes contain navigation instructions for a single trip as: waypoints (fixed locations) and route legs
+	// (sections of the route between waypoints). Each response may also include information about the route itself,
+	// such as its overall shape, map location, or a summary description.
+	Routes []Route `json:"route,omitempty"`
 }
 
 // CalculateRoute calculates a route using a generic vehicle/pedestrian mode.

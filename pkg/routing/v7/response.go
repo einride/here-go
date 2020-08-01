@@ -2,11 +2,6 @@ package routingv7
 
 import "encoding/json"
 
-type CalculateRouteResponse struct {
-	MetaInfo RouteResponseMetaInfo `json:"metaInfo,omitempty"`
-	Route    []RouteResponse       `json:"route,omitempty"`
-}
-
 type RouteResponseMetaInfo struct {
 	// Mirrored RequestId value from the request structure. Used to trace requests.
 	RequestID string `json:"requestId,omitempty"`
@@ -22,12 +17,12 @@ type RouteResponseMetaInfo struct {
 	InterfaceVersion string `json:"interfaceVersion,omitempty"`
 }
 
-type RouteResponse struct {
+type Route struct {
 	// Overall route distance and time summary.
-	Summary RouteResponseSummary `json:"summary,omitempty"`
+	Summary RouteSummary `json:"summary,omitempty"`
 }
 
-type RouteResponseSummary struct {
+type RouteSummary struct {
 	// Indicates total travel distance for the route, in meters.
 	Distance float64 `json:"distance,omitempty"`
 	// Contains the travel time estimate in seconds for this element, considering traffic
