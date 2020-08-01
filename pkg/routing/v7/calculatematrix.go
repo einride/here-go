@@ -96,7 +96,7 @@ type CalculateMatrixResponse struct {
 	// MatrixEntries Entries are the entries in the matrix.
 	// There is one entry for each start and each destination which provides the corresponding route.
 	// The overall number of entries is therefore #starts * #destinations..
-	MatrixEntries []RouteResponseType `json:"matrixEntry,omitempty"`
+	MatrixEntries []RouteResponse `json:"matrixEntry,omitempty"`
 }
 
 // RouteMatrixEntry provides summary information for the route between waypoints indicated by indices of the start
