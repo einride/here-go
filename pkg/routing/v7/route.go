@@ -54,7 +54,7 @@ type RouteLeg struct {
 	// BaseTime is the estimated time in seconds spent on this leg, without considering traffic conditions.
 	// The service may also account for additional time penalties, therefore this may be greater than the leg length
 	// divided by the base speed.
-	BaseTimeSeconds float64 `json:"baseTime,omitempty"`
+	BaseTime Duration `json:"baseTime,omitempty"`
 }
 
 // RouteLink is a path segment in the routing network, such as a road.
@@ -76,7 +76,7 @@ type RouteLink struct {
 
 	// RemainingTimeMeters needed from the start of this element to the destination of the route.
 	// Considers any available traffic information, if enabled and the authorized for the user.
-	RemainingTimeSeconds float64 `json:"remainTime,omitempty"`
+	RemainingTime Duration `json:"remainTime,omitempty"`
 }
 
 type RouteLinkFlag string
