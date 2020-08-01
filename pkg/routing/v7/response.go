@@ -4,7 +4,7 @@ import "encoding/json"
 
 type CalculateRouteResponse struct {
 	MetaInfo RouteResponseMetaInfo `json:"metaInfo,omitempty"`
-	Route    []RouteResponseType   `json:"route,omitempty"`
+	Route    []RouteResponse       `json:"route,omitempty"`
 }
 
 type RouteResponseMetaInfo struct {
@@ -22,12 +22,12 @@ type RouteResponseMetaInfo struct {
 	InterfaceVersion string `json:"interfaceVersion,omitempty"`
 }
 
-type RouteResponseType struct {
+type RouteResponse struct {
 	// Overall route distance and time summary.
-	Summary RouteResponseSummaryType `json:"summary,omitempty"`
+	Summary RouteResponseSummary `json:"summary,omitempty"`
 }
 
-type RouteResponseSummaryType struct {
+type RouteResponseSummary struct {
 	// Indicates total travel distance for the route, in meters.
 	Distance float64 `json:"distance,omitempty"`
 	// Contains the travel time estimate in seconds for this element, considering traffic
@@ -63,7 +63,7 @@ const (
 	RouteLinkFlagHOVLane = "HOVLane"
 	// Link is part of a motorway
 	RouteLinkFlagMotorway = "motorway"
-	//Link is part of a road that you can enter but you have to exit the same way
+	// Link is part of a road that you can enter but you have to exit the same way
 	RouteLinkFlagNoThroughRoad = "noThroughRoad"
 	// Link is part of a park
 	RouteLinkFlagPark = "park"
