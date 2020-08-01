@@ -14,6 +14,10 @@ const (
 	userAgent = "einride/here-go"
 )
 
+// RouteService handles communication with the route related methods of the
+// v7 HERE API.
+type RouteService service
+
 type Client struct {
 	// HTTP client used to communicate with the API.
 	client *http.Client

@@ -26,7 +26,7 @@ type GetRouteResponse struct {
 	// or the map version on which the calculation was based.
 	MetaInfo RouteResponseMetaInfo `json:"metaInfo,omitempty"`
 	// Contains the calculated path across a navigable link network, as specified in the request.
-	Route RouteResponse `json:"route,omitempty"`
+	Route Route `json:"route,omitempty"`
 }
 
 func (r *GetRouteRequest) Encode() string {
