@@ -51,20 +51,25 @@ func (r *GetRouteRequest) QueryString() string {
 func (s *RouteService) GetRoute(
 	ctx context.Context,
 	req *GetRouteRequest,
-) (*GetRouteResponse, error) {
+) (_ *GetRouteResponse, err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("get route %s: %v", req.RouteID, err)
+		}
+	}()
 	u, err := s.URL.Parse("getroute.json")
 	if err != nil {
 		return nil, err
 	}
 	r, err := s.client.NewRequest(ctx, u, http.MethodGet, req.QueryString(), nil)
 	if err != nil {
-		return nil, fmt.Errorf("unable to create get request: %v", err)
+		return nil, err
 	}
 	var resp struct {
 		Response GetRouteResponse `json:"response"`
 	}
-	if err = s.client.Do(r, &resp); err != nil {
-		return nil, fmt.Errorf("unable to get routes: %v", err)
+	if err := s.client.Do(r, &resp); err != nil {
+		return nil, err
 	}
 	return &resp.Response, nil
 }
