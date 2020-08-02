@@ -11,7 +11,7 @@ type Route struct {
 	Summary RouteSummary `json:"summary,omitempty"`
 
 	// Legs is a partition of the route into legs between the different waypoints.
-	Legs []RouteLeg
+	Legs []RouteLeg `json:"leg,omitempty"`
 }
 
 type RouteSummary struct {
