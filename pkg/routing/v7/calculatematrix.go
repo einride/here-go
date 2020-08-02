@@ -161,10 +161,15 @@ const (
 // CalculateMatrix returns a matrix of route summaries.
 // The required parameters for this resource are mode and a set of start and destination waypoints.
 // Other parameters can be left unspecified.
-func (s *RouteService) CalculateMatrix(
+func (s *MatrixService) CalculateMatrix(
 	ctx context.Context,
 	req *CalculateMatrixRequest,
-) (*CalculateMatrixResponse, error) {
+) (_ *CalculateMatrixResponse, err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("calculate matrix: %v", err)
+		}
+	}()
 	u, err := s.URL.Parse("calculatematrix.json")
 	if err != nil {
 		return nil, err
@@ -176,8 +181,8 @@ func (s *RouteService) CalculateMatrix(
 	var resp struct {
 		Response CalculateMatrixResponse `json:"response"`
 	}
-	if err = s.client.Do(r, &resp); err != nil {
-		return nil, fmt.Errorf("unable to get routes: %v", err)
+	if err := s.client.Do(r, &resp); err != nil {
+		return nil, err
 	}
 	return &resp.Response, nil
 }
