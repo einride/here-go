@@ -14,9 +14,11 @@ const (
 	userAgent = "einride/here-go"
 )
 
-// RouteService handles communication with the route related methods of the
-// v7 HERE API.
+// RouteService handles communication with the route-related methods of the v7 HERE API.
 type RouteService service
+
+// MatrixService handles communication with the matrix-related methods of the v7 HERE API.
+type MatrixService service
 
 type Client struct {
 	// HTTP client used to communicate with the API.
@@ -27,8 +29,11 @@ type Client struct {
 	// Reuse a single struct instead of allocating one for each service on the heap.
 	common service
 
-	// Services used for talking to different parts of the HERE API
+	// Route service.
 	Route *RouteService
+
+	// Matrix service.
+	Matrix *MatrixService
 }
 
 type service struct {
@@ -58,8 +63,10 @@ func New(httpClient *http.Client) *Client {
 	}
 	c := &Client{client: httpClient, UserAgent: userAgent}
 	c.common.client = c
-	rURL, _ := url.Parse("https://route.ls.hereapi.com/routing/7.2/")
-	c.Route = &RouteService{URL: rURL, client: c}
+	routeURL, _ := url.Parse("https://route.ls.hereapi.com/routing/7.2/")
+	c.Route = &RouteService{URL: routeURL, client: c}
+	matrixURL, _ := url.Parse("https://matrix.route.ls.hereapi.com/routing/7.2/")
+	c.Matrix = &MatrixService{URL: matrixURL, client: c}
 	return c
 }
 
