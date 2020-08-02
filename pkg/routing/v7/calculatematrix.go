@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 type CalculateMatrixRequest struct {
@@ -61,8 +62,12 @@ func (r *CalculateMatrixRequest) QueryString() string {
 	if mode != "" {
 		values.Add("mode", r.Mode.String())
 	}
-	for _, attr := range r.SummaryAttributes {
-		values.Add("summaryAttributes", attr.String())
+	if len(r.SummaryAttributes) > 0 {
+		summaryAttributes := make([]string, 0, len(r.SummaryAttributes))
+		for _, attr := range r.SummaryAttributes {
+			summaryAttributes = append(summaryAttributes, attr.String())
+		}
+		values.Add("summaryAttributes", strings.Join(summaryAttributes, ","))
 	}
 	if r.TruckType != TruckTypeInvalid {
 		values.Add("truckType", r.TruckType.String())
