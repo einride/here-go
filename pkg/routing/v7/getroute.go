@@ -30,17 +30,17 @@ type GetRouteResponse struct {
 }
 
 func (r *GetRouteRequest) QueryString() string {
-	var vals url.Values
+	values := make(url.Values)
 	for i, wp := range r.Waypoints {
-		vals.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
+		values.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
 	}
 	if mode := r.Mode.String(); mode != "" {
-		vals.Add("mode", mode)
+		values.Add("mode", mode)
 	}
 	if representation := r.Representation.String(); representation != "" {
-		vals.Add("representation", representation)
+		values.Add("representation", representation)
 	}
-	return vals.Encode()
+	return values.Encode()
 }
 
 // GetRoute requests a previously calculated route by providing a route ID.
