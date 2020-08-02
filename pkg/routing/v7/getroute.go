@@ -34,6 +34,7 @@ func (r *GetRouteRequest) QueryString() string {
 	for i, wp := range r.Waypoints {
 		values.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
 	}
+	values.Set("routeId", r.RouteID)
 	if mode := r.Mode.String(); mode != "" {
 		values.Add("mode", mode)
 	}
