@@ -50,7 +50,7 @@ type CalculateMatrixRequest struct {
 }
 
 func (r *CalculateMatrixRequest) QueryString() string {
-	var values url.Values
+	values := make(url.Values)
 	for i, wp := range r.StartWaypoints {
 		values.Add(fmt.Sprintf("start%d", i), wp.QueryString())
 	}

@@ -46,39 +46,39 @@ type CalculateRouteRequest struct {
 }
 
 func (r *CalculateRouteRequest) QueryString() string {
-	vals := url.Values{}
+	values := make(url.Values)
 	for i, wp := range r.Waypoints {
-		vals.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
+		values.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
 	}
 	mode := r.Mode.String()
 	if mode != "" {
-		vals.Add("mode", r.Mode.String())
+		values.Add("mode", r.Mode.String())
 	}
 	if r.TruckType != TruckTypeInvalid {
-		vals.Add("truckType", r.TruckType.String())
+		values.Add("truckType", r.TruckType.String())
 	}
 	if r.TrailersCount > 0 {
-		vals.Add("trailersCount", strconv.Itoa(r.TrailersCount))
+		values.Add("trailersCount", strconv.Itoa(r.TrailersCount))
 	}
 	if r.AxleCount > 0 {
-		vals.Add("axleCount", strconv.Itoa(r.AxleCount))
+		values.Add("axleCount", strconv.Itoa(r.AxleCount))
 	}
 	if r.LimitedWeight > 0 {
-		vals.Add("limitedWeight", strconv.FormatFloat(r.LimitedWeight, 'f', -1, 64))
+		values.Add("limitedWeight", strconv.FormatFloat(r.LimitedWeight, 'f', -1, 64))
 	}
 	if r.WeightPerAxle > 0 {
-		vals.Add("weightPerAxle", strconv.FormatFloat(r.WeightPerAxle, 'f', -1, 64))
+		values.Add("weightPerAxle", strconv.FormatFloat(r.WeightPerAxle, 'f', -1, 64))
 	}
 	if r.Height > 0 {
-		vals.Add("height", strconv.FormatFloat(r.Height, 'f', -1, 64))
+		values.Add("height", strconv.FormatFloat(r.Height, 'f', -1, 64))
 	}
 	if r.Width > 0 {
-		vals.Add("width", strconv.FormatFloat(r.Width, 'f', -1, 64))
+		values.Add("width", strconv.FormatFloat(r.Width, 'f', -1, 64))
 	}
 	if r.Length > 0 {
-		vals.Add("length", strconv.FormatFloat(r.Length, 'f', -1, 64))
+		values.Add("length", strconv.FormatFloat(r.Length, 'f', -1, 64))
 	}
-	return vals.Encode()
+	return values.Encode()
 }
 
 // CalculateRouteResponse contains response data, structured to match a particular request for the CalculateRoute
