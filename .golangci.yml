@@ -1,7 +1,5 @@
 run:
   timeout: 5m
-  skip-dirs:
-    - pkg/.*/openapi
 
 linters:
   enable-all: true
@@ -20,3 +18,7 @@ linters:
     - maligned # pre-optimization
     - nlreturn # don't enforce blank line before return
     - exhaustive # don't enforce exhaustive switches
+    - exhaustivestruct # don't require specifying all struct fields
+    - errorlint # TODO: consider updating to %w and enabling
+    - wrapcheck # TODO: consider adding error wrapping and enabling
+    - forbidigo # Printf allowed in example tests
