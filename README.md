@@ -19,8 +19,8 @@ import (
 	"fmt"
 
 	"github.com/antihax/optional"
-	routingv8 "github.com/einride/here-go/pkg/openapi/routing/v8"
-	v8types "github.com/einride/here-go/pkg/routing/v8"
+	routingv8 "go.einride.tech/here/pkg/openapi/routing/v8"
+	v8types "go.einride.tech/here/pkg/routing/v8"
 )
 
 func main() {
