@@ -7,7 +7,7 @@ API docs can be found [here](https://developer.here.com/documentation/routing/de
 ## Usage
 
 ```go
-import routingv7 "github.com/einride/here-go/pkg/routing/v7"
+import routingv7 "go.einride.tech/here/pkg/routing/v7"
 ```
 
 Construct a new HERE client, then use the various services on the client to
