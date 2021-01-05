@@ -49,8 +49,7 @@ type ErrorResponse struct {
 }
 
 func (r *ErrorResponse) Error() string {
-	return fmt.Sprintf("%v %v: %d",
-		r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode)
+	return fmt.Sprintf("%v %v: %d", r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode)
 }
 
 // New returns a new HERE API client. If a nil httpClient is
@@ -77,7 +76,8 @@ func New(httpClient *http.Client) *Client {
 func (c *Client) NewRequest(
 	ctx context.Context,
 	u *url.URL,
-	method, rawQuery string,
+	method string,
+	rawQuery string,
 	body interface{},
 ) (*http.Request, error) {
 	if len(rawQuery) > 0 {

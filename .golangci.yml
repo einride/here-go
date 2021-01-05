@@ -18,3 +18,5 @@ linters:
     - unparam # allow constant parameters
     - goerr113 # allow "dynamic" errors
     - maligned # pre-optimization
+    - nlreturn # don't enforce blank line before return
+    - exhaustive # don't enforce exhaustive switches

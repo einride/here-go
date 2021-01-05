@@ -82,26 +82,26 @@ type RouteLink struct {
 type RouteLinkFlag string
 
 const (
-	// Link can only be traversed by using a boat ferry
+	// Link can only be traversed by using a boat ferry.
 	RouteLinkFlagBoatFerry = "ferry"
-	// Link is part of a dirt road
+	// Link is part of a dirt road.
 	RouteLinkFlagDirtRoad = "dirtRoad"
-	// Link can only be traversed by using high-occupancy vehicle (HOV) lanes
+	// Link can only be traversed by using high-occupancy vehicle (HOV) lanes.
 	RouteLinkFlagHOVLane = "HOVLane"
-	// Link is part of a motorway
+	// Link is part of a motorway.
 	RouteLinkFlagMotorway = "motorway"
-	// Link is part of a road that you can enter but you have to exit the same way
+	// Link is part of a road that you can enter but you have to exit the same way.
 	RouteLinkFlagNoThroughRoad = "noThroughRoad"
-	// Link is part of a park
+	// Link is part of a park.
 	RouteLinkFlagPark = "park"
-	// Link is part of a private road
+	// Link is part of a private road.
 	RouteLinkFlagPrivateRoad = "privateRoad"
-	// Link can only be traversed by using a rail ferry
+	// Link can only be traversed by using a rail ferry.
 	RouteLinkFlagRailFerry = "railFerry"
-	// Link is part of a toll road
+	// Link is part of a toll road.
 	RouteLinkFlagTollRoad = "tollRoad"
-	// Link passes through a tunnel
+	// Link passes through a tunnel.
 	RouteLinkFlagTunnel = "tunnel"
-	// Link is part of a built-up area
+	// Link is part of a built-up area.
 	RouteLinkFlagBuiltUpArea = "builtUpArea"
 )

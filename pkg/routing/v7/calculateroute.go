@@ -87,7 +87,7 @@ func (r *CalculateRouteRequest) QueryString() string {
 // The Route element may appear more than once in the response if multiple routes are available between the start and
 // end points.
 //
-//Refer to CalculateRouteRequest, described in Calculate Route for details on associated request elements.
+// Refer to CalculateRouteRequest, described in Calculate Route for details on associated request elements.
 type CalculateRouteResponse struct {
 	// MetaInfo provides details about the request itself, such as the time at which it was processed, a request id, or
 	// the map version on which the calculation was based.

@@ -155,9 +155,9 @@ func (t RouteType) String() string {
 type TransportModeType int
 
 const (
-	// Route calculation for cars
+	// Route calculation for cars.
 	TransportModeCar TransportModeType = iota
-	// Route calculation for HOV (high-occupancy vehicle) cars
+	// Route calculation for HOV (high-occupancy vehicle) cars.
 	TransportModeCarHOV
 	// Route calculation for a pedestrian. As one effect, maneuvers will be optimized for walking,
 	// that is segments will consider actions relevant for pedestrians and maneuver instructions will
