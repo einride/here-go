@@ -16,6 +16,11 @@ include tools/golangci-lint/rules.mk
 include tools/goreview/rules.mk
 include tools/semantic-release/rules.mk
 
+.PHONY: clean
+clean:
+	$(info [$@] removing build files...)
+	@rm -rf build
+
 .PHONY: go-build
 go-build:
 	$(info [$@] cross-compiling to supported OSes...)
@@ -26,7 +31,8 @@ go-build:
 .PHONY: go-test
 go-test:
 	$(info [$@] running Go tests...)
-	@go test -count 1 -cover -race ./...
+	@mkdir -p build/coverage
+	@go test -short -race -coverprofile=build/coverage/$@.txt -covermode=atomic ./...
 
 .PHONY: go-mod-tidy
 go-mod-tidy:
