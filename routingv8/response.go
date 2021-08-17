@@ -1,48 +1,35 @@
 package routingv8
 
 import (
-	"fmt"
-	"strconv"
+	"encoding/json"
 )
+
+type ErrorCodes []ErrorCode
+
+func (e *ErrorCodes) UnmarshalJSON(b []byte) error {
+	errorCodes := make([]int, 0)
+	if err := json.Unmarshal(b, &errorCodes); err != nil {
+		return err
+	}
+	codes := make([]ErrorCode, 0, len(errorCodes))
+	for _, errorCode := range errorCodes {
+		codes = append(codes, ErrorCode(errorCode))
+	}
+	*e = codes
+	return nil
+}
 
 type ErrorCode int
 
 // See https://developer.here.com/documentation/matrix-routing-api/8.6.0/api-reference-swagger.html
 // for detailed explanations of each error.
 const (
-	ErrorCodeUnspecified ErrorCode = iota
-	ErrorCodeSuccess
-	ErrorCodeDisconnected
-	ErrorCodeMatchingFailed
-	ErrorCodeParameterViolation
-	ErrorCodeUnknown
+	ErrorCodeSuccess            = 0
+	ErrorCodeDisconnected       = 1
+	ErrorCodeMatchingFailed     = 2
+	ErrorCodeParameterViolation = 3
+	ErrorCodeUnknown            = 99
 )
-
-func (e *ErrorCode) UnmarshalString(value string) error {
-	switch value {
-	case "0":
-		*e = ErrorCodeSuccess
-	case "1":
-		*e = ErrorCodeDisconnected
-	case "2":
-		*e = ErrorCodeMatchingFailed
-	case "3":
-		*e = ErrorCodeParameterViolation
-	case "99":
-		*e = ErrorCodeUnknown
-	default:
-		return fmt.Errorf("invalid error code")
-	}
-	return nil
-}
-
-func (e *ErrorCode) UnmarshalJSON(b []byte) error {
-	value, err := strconv.Unquote(string(b))
-	if err != nil {
-		return err
-	}
-	return e.UnmarshalString(value)
-}
 
 // MatrixResponse contains the calculated route matrix.
 type MatrixResponse struct {
@@ -55,7 +42,7 @@ type MatrixResponse struct {
 	// Distances calculated using origins and destinations. Nil if not requested in MatrixAttributes.
 	Distances []int32 `json:"distances"`
 	// ErrorCodes contains potential route errors. Nil if no errors occurred.
-	ErrorCodes []ErrorCode `json:"errorCodes"`
+	ErrorCodes ErrorCodes `json:"errorCodes"`
 }
 
 // CalculateMatrixResponse is used to provide results of a matrix calculation.

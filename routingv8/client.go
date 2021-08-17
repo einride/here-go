@@ -14,12 +14,16 @@ const (
 	userAgent = "einride/here-go"
 )
 
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 // MatrixService handles communication with the matrix-related methods of the v7 HERE API.
 type MatrixService service
 
 type Client struct {
 	// HTTP client used to communicate with the API.
-	client *http.Client
+	client HTTPClient
 
 	UserAgent string
 
@@ -54,7 +58,7 @@ func (r *errorResponse) Error() string {
 // provided, a new http.Client will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client) *Client {
+func NewClient(httpClient HTTPClient) *Client {
 	if httpClient == nil {
 		httpClient = &http.Client{}
 	}
