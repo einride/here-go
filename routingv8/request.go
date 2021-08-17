@@ -168,7 +168,7 @@ func (r *RegionType) UnmarshalString(value string) error {
 	return nil
 }
 
-func (r *RegionType) MarshalJSON() ([]byte, error) {
+func (r RegionType) MarshalJSON() ([]byte, error) {
 	return []byte(strconv.Quote(r.String())), nil
 }
 
