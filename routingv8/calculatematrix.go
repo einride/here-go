@@ -6,6 +6,21 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"go.opencensus.io/stats"
+	"go.opencensus.io/tag"
+)
+
+var (
+	// nolint:gochecknoglobals
+	mRequestCount = stats.Int64(
+		"here-go/request-count",
+		"The number of requests being sent to Here Maps APIs",
+		"request count",
+	)
+	// error is only returned when key name character length is 0 more than 255.
+	// nolint:gochecknoglobals
+	keyMethod, _ = tag.NewKey("method")
 )
 
 func (c *CalculateMatrixRequest) QueryString() string {
@@ -22,6 +37,10 @@ func (s *MatrixService) CalculateMatrix(
 	ctx context.Context,
 	req *CalculateMatrixRequest,
 ) (_ *CalculateMatrixResponse, err error) {
+	mCtx, err := tag.New(ctx, tag.Insert(keyMethod, "CalculateMatrix"))
+	if err != nil {
+		return nil, err
+	}
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("calculate matrix: %v", err)
@@ -40,6 +59,7 @@ func (s *MatrixService) CalculateMatrix(
 		return nil, fmt.Errorf("unable to create post request: %v", err)
 	}
 	var resp CalculateMatrixResponse
+	stats.Record(mCtx, mRequestCount.M(1))
 	if err := s.Client.Do(r, &resp); err != nil {
 		return nil, err
 	}
