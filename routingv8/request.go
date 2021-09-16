@@ -215,7 +215,7 @@ const (
 
 func (m *MatrixAttribute) String() string {
 	switch *m {
-	case RegionTypeUnspecified:
+	case MatrixAttributeUnspecified:
 		return unspecified
 	case MatrixAttributeTravelTimes:
 		return "travelTimes"
@@ -279,7 +279,7 @@ const (
 
 func (t *TransportMode) String() string {
 	switch *t {
-	case RegionTypeUnspecified:
+	case TransportModeUnspecified:
 		return unspecified
 	case TransportModeCar:
 		return "car"
