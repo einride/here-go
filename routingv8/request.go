@@ -10,6 +10,7 @@ import (
 const (
 	invalid     = "invalid"
 	unspecified = "unspecified"
+	none        = "None"
 )
 
 type CalculateMatrixBody struct {
@@ -387,7 +388,7 @@ const (
 func (t *TunnelCategory) String() string {
 	switch *t {
 	case TunnelCategoryUnspecified:
-		return unspecified
+		return none
 	case TunnelCategoryB:
 		return "B"
 	case TunnelCategoryC:
