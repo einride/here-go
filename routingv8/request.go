@@ -51,6 +51,9 @@ type GeoWaypoint struct {
 	Long float64 `json:"lng,omitempty"`
 }
 
+// DepartureTimeAny enforces non time-aware routing.
+const DepartureTimeAny = "any"
+
 type Profile int
 
 const (
