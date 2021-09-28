@@ -47,8 +47,8 @@ type CalculateMatrixRequest struct {
 }
 
 type GeoWaypoint struct {
-	Lat  float64 `json:"lat,omitempty"`
-	Long float64 `json:"lng,omitempty"`
+	Lat  float64 `json:"lat"`
+	Long float64 `json:"lng"`
 }
 
 // DepartureTimeAny enforces non time-aware routing.
