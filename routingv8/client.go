@@ -37,13 +37,13 @@ type service struct {
 	Client *Client
 }
 
-// An errorResponse reports the error caused by an API request.
-type errorResponse struct {
+// A responseError reports the error caused by an API request.
+type responseError struct {
 	// HTTP response that caused this error
 	Response *HereErrorResponse
 }
 
-func (r *errorResponse) Error() string {
+func (r *responseError) Error() string {
 	return fmt.Sprintf(
 		"Title: %v, Status: %d, Code: %v, Cause: %v, Action: %v",
 		r.Response.Title,
@@ -143,6 +143,5 @@ func checkResponse(r *http.Response) error {
 	if err != nil {
 		return err
 	}
-	errorResponse := &errorResponse{Response: &response}
-	return errorResponse
+	return &responseError{Response: &response}
 }

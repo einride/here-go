@@ -178,7 +178,7 @@ const (
 	// Route calculation for bicycles. This mode uses the pedestrian road network, but uses different
 	// speeds based on each road's suitability for cycling. Pedestrian roads that are also open for cars
 	// in the travel direction are considered open for cycling, as are pedestrian roads located in parks.
-	// These roads use full bicycle speed for routing. Other pedestrian roads, including travelling the wrong
+	// These roads use full bicycle speed for routing. Other pedestrian roads, including traveling the wrong
 	// way down one-way streets, are considered at the pedestrian walking speed, as it is assumed the bicycle
 	// must be pushed.
 	TransportModeBicycle
