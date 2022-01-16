@@ -50,8 +50,7 @@ func (r *CalculateRouteRequest) QueryString() string {
 	for i, wp := range r.Waypoints {
 		values.Add(fmt.Sprintf("waypoint%d", i), wp.QueryString())
 	}
-	mode := r.Mode.String()
-	if mode != "" {
+	if r.Mode.String() != "" {
 		values.Add("mode", r.Mode.String())
 	}
 	if r.TruckType != TruckTypeInvalid {

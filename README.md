@@ -1,41 +1,31 @@
-# HERE Go
+HERE Go
+=======
 
-[![PkgGoDev][pkg-badge]][pkg]
-[![GoReportCard][report-badge]][report]
-[![Codecov][codecov-badge]][codecov]
-
-[pkg-badge]: https://pkg.go.dev/badge/go.einride.tech/here
-[pkg]: https://pkg.go.dev/go.einride.tech/here
-[report-badge]: https://goreportcard.com/badge/go.einride.tech/here
-[report]: https://goreportcard.com/report/go.einride.tech/here
-[codecov-badge]: https://codecov.io/gh/einride/here-go/branch/master/graph/badge.svg
-[codecov]: https://codecov.io/gh/einride/here-go
+[![PkgGoDev](https://pkg.go.dev/badge/go.einride.tech/here)](https://pkg.go.dev/go.einride.tech/here) [![GoReportCard](https://goreportcard.com/badge/go.einride.tech/here)](https://goreportcard.com/report/go.einride.tech/here) [![Codecov](https://codecov.io/gh/einride/here-go/branch/master/graph/badge.svg)](https://codecov.io/gh/einride/here-go)
 
 Go SDK for the HERE Maps API.
 
-## Documentation
+Documentation
+-------------
 
-API documentation can be found at [developer.here.com][api-docs].
+API documentation can be found at [developer.here.com](https://developer.here.com).
 
-[api-docs]: https://developer.here.com
-
-## Installing
+Installing
+----------
 
 ```bash
 $ go get go.einride.tech/here
 ```
 
-## Authentication
+Authentication
+--------------
 
-The package does not directly handle authentication. Instead, when
-creating a new client, pass an `http.Client` that can handle
-authentication for you.
+The package does not directly handle authentication. Instead, when creating a new client, pass an `http.Client` that can handle authentication for you.
 
-Note that when using an authenticated Client, all calls made by the client
-will include the same authentication data. Therefore, authenticated
-clients should almost never be shared between different users.
+Note that when using an authenticated Client, all calls made by the client will include the same authentication data. Therefore, authenticated clients should almost never be shared between different users.
 
-## Complete Examples
+Complete Examples
+-----------------
 
 ### v7 Routing API
 

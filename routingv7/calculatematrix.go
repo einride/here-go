@@ -58,8 +58,7 @@ func (r *CalculateMatrixRequest) QueryString() string {
 	for i, wp := range r.DestinationWaypoints {
 		values.Add(fmt.Sprintf("destination%d", i), wp.QueryString())
 	}
-	mode := r.Mode.String()
-	if mode != "" {
+	if r.Mode.String() != "" {
 		values.Add("mode", r.Mode.String())
 	}
 	if len(r.SummaryAttributes) > 0 {
