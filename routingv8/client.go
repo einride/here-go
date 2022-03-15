@@ -18,8 +18,11 @@ type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// MatrixService handles communication with the matrix-related methods of the v7 HERE API.
+// MatrixService handles communication with the matrix-related methods of the HERE API.
 type MatrixService service
+
+// RoutingService handles communication with the routing-related methods of the HERE API.
+type RoutingService service
 
 type Client struct {
 	// HTTP client used to communicate with the API.
@@ -28,7 +31,8 @@ type Client struct {
 	UserAgent string
 
 	// Matrix service.
-	Matrix *MatrixService
+	Matrix  *MatrixService
+	Routing *RoutingService
 }
 
 type service struct {
@@ -65,6 +69,8 @@ func NewClient(httpClient HTTPClient) *Client {
 	c := &Client{client: httpClient, UserAgent: userAgent}
 	matrixURL, _ := url.Parse("https://matrix.router.hereapi.com/v8/")
 	c.Matrix = &MatrixService{URL: matrixURL, Client: c}
+	routingURL, _ := url.Parse("https://router.hereapi.com/v8/")
+	c.Routing = &RoutingService{URL: routingURL, Client: c}
 	return c
 }
 

@@ -46,6 +46,12 @@ type CalculateMatrixRequest struct {
 	Body *CalculateMatrixBody
 }
 
+type RoutesRequest struct {
+	Origin        GeoWaypoint
+	Destination   GeoWaypoint
+	TransportMode TransportMode
+}
+
 type GeoWaypoint struct {
 	Lat  float64 `json:"lat"`
 	Long float64 `json:"lng"`
