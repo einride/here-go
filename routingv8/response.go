@@ -83,6 +83,8 @@ type Section struct {
 	Arrival Place `json:"arrival"`
 	// Summary contain info on the duration and length of section
 	Summary Summary `json:"summary"`
+	// Polyline in Flexible Polyline format
+	Polyline string `json:"polyline"`
 }
 
 // Place with lat and long info on where the place is.
