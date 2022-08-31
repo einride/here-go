@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // Routes returns all possible routes between origin and destination.
@@ -29,6 +30,21 @@ func (s *RoutingService) Routes(
 	values.Add("transportMode", tm)
 	values.Add("origin", fmt.Sprintf("%v,%v", req.Origin.Lat, req.Origin.Long))
 	values.Add("destination", fmt.Sprintf("%v,%v", req.Destination.Lat, req.Destination.Long))
+
+	if req.AvoidAreas != nil {
+		var avoidString string
+		for _, a := range req.AvoidAreas {
+			avoid := a.String()
+			if avoid == invalid {
+				return nil, fmt.Errorf("invalid avoid area")
+			}
+			if avoid != unspecified {
+				avoidString += fmt.Sprintf("%s,%s", avoidString, avoid)
+			}
+		}
+		avoidString = strings.Trim(avoidString, ",")
+		values.Add("avoid[features]", avoidString)
+	}
 
 	r, err := s.Client.NewRequest(ctx, u, http.MethodGet, values.Encode(), nil)
 	if err != nil {
