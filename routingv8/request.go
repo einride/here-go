@@ -50,6 +50,7 @@ type RoutesRequest struct {
 	Origin        GeoWaypoint
 	Destination   GeoWaypoint
 	TransportMode TransportMode
+	AvoidAreas    []AreaFeature
 }
 
 type GeoWaypoint struct {
@@ -428,4 +429,38 @@ type Truck struct {
 	TunnelCategory        TunnelCategory            `json:"tunnelCategory"`
 	AxleCount             int                       `json:"axleCount"`
 	TrailerCount          int                       `json:"trailerCount"`
+}
+
+type AreaFeature int
+
+const (
+	AreaFeatureUnspecified AreaFeature = iota
+	AreaFeatureFerry
+	AreaFeatureTollRoad
+	AreaFeatureTunnel
+	AreaFeatureControlledAccessHighway
+)
+
+func (t *AreaFeature) String() string {
+	switch *t {
+	case AreaFeatureUnspecified:
+		return unspecified
+	case AreaFeatureFerry:
+		return "ferry"
+	case AreaFeatureTollRoad:
+		return "tollRoad"
+	case AreaFeatureTunnel:
+		return "tunnel"
+	case AreaFeatureControlledAccessHighway:
+		return "controlledAccessHighway"
+	default:
+		return invalid
+	}
+}
+
+func (t *AreaFeature) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString(`"`)
+	buffer.WriteString(t.String())
+	buffer.WriteString(`"`)
+	return buffer.Bytes(), nil
 }
