@@ -88,10 +88,10 @@ func (p *Profile) String() string {
 	case ProfileTruckFast:
 		return "truckFast"
 	case ProfilePedestrian:
-		// nolint:goconst
+		//nolint:goconst
 		return "pedestrian"
 	case ProfileBicycle:
-		// nolint:goconst
+		//nolint:goconst
 		return "bicycle"
 	default:
 		return invalid
