@@ -65,7 +65,7 @@ type RoutesResponse struct {
 
 // Route contains all the sections of a route.
 type Route struct {
-	// Id of the route
+	// ID of the route
 	ID string `json:"id"`
 	// Sections in the route
 	Sections []Section `json:"sections"`
@@ -73,7 +73,7 @@ type Route struct {
 
 // Section with the information of the departure, arrival location and summary.
 type Section struct {
-	// Id of the section
+	// ID of the section
 	ID string `json:"id"`
 	// The type used in the section
 	Type string `json:"type"`
