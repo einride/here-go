@@ -104,13 +104,60 @@ type FieldScore struct {
 // HereErrorResponse is returned when an error is returned from the Here Maps API.
 type HereErrorResponse struct {
 	// Title of the error
-	Title string `json:"title"`
+	Title string `json:"title" xml:"title"`
 	// Http status code
-	Status int `json:"status"`
+	Status int `json:"status" xml:"status"`
 	// Here Maps API error code
-	Code string `json:"code"`
+	Code string `json:"code" xml:"code"`
 	// Cause of the error
-	Cause string `json:"cause"`
+	Cause string `json:"cause" xml:"cause"`
 	// Action Suggested to fix error
-	Action string `json:"action"`
+	Action string `json:"action" xml:"action"`
+}
+
+type BatchGeocoderResponse struct {
+	Response struct {
+		MetaInfo struct {
+			RequestID string `xml:"RequestId,omitempty"`
+		}
+		Status         JobStatus `xml:"Status,omitempty"`
+		TotalCount     int       `xml:"TotalCount,omitempty"`
+		ValidCount     int       `xml:"ValidCount,omitempty"`
+		InvalidCount   int       `xml:"InvalidCount,omitempty"`
+		ProcessedCount int       `xml:"ProcessedCount,omitempty"`
+		PendingCount   int       `xml:"PendingCount,omitempty"`
+		SuccessCount   int       `xml:"SuccessCount,omitempty"`
+		ErrorCount     int       `xml:"ErrorCount,omitempty"`
+		JobStarted     string    `xml:"JobStarted,omitempty"`
+		JobFinished    string    `xml:"JobFinished,omitempty"`
+	}
+}
+
+type JobStatus string
+
+const (
+	JobStatusAccepted  = "accepted"
+	JobStatusCancelled = "canceled"
+	JobStatusCompleted = "completed"
+	JobStatusDeleted   = "deleted"
+	JobStatusFailed    = "failed"
+	JobStatusRunning   = "running"
+	JobStatusSubmitted = "submitted"
+)
+
+type BatchGeocoderResponseRow struct {
+	RecID            string  `csv:"recId"`
+	SeqNumber        int     `csv:"SeqNumber"`
+	SeqLength        int     `csv:"seqLength"`
+	DisplayLatitude  float64 `csv:"displayLatitude"`
+	DisplayLongitude float64 `csv:"displayLongitude"`
+	LocationLabel    string  `csv:"locationLabel"`
+	HouseNumber      string  `csv:"houseNumber"`
+	Street           string  `csv:"street"`
+	District         string  `csv:"district"`
+	City             string  `csv:"city"`
+	PostalCode       string  `csv:"postalCode"`
+	County           string  `csv:"county"`
+	State            string  `csv:"state"`
+	Country          string  `csv:"country"`
 }

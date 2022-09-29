@@ -20,7 +20,7 @@ func (s *GeocodingService) Geocoding(
 	}
 
 	if req.Q == nil && req.Address == nil {
-		return nil, fmt.Errorf("InvalidArgument, either Q or QQ must be provided")
+		return nil, fmt.Errorf("InvalidArgument, either Queries or QQ must be provided")
 	}
 
 	values := make(url.Values)
