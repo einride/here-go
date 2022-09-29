@@ -138,3 +138,41 @@ func main() {
 	}
 }
 ```
+
+### v7 Geocoding & Search API
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"os"
+
+	"go.einride.tech/here/geocodingsearchv7"
+)
+
+func main() {
+	ctx := context.Background()
+	apiKey := os.Getenv("HERE_API_KEY")
+	// Create an authenticated client
+	geocodingClient := geocodingsearchv7.NewClient(
+		geocodingsearchv7.NewAPIKeyHTTPClient(apiKey, http.DefaultClient.Transport),
+	)
+
+	// The query to geocode
+	q := "Regeringsgatan 65, Stocholm"
+	// Call Here Maps API
+	response, err := geocodingClient.Geocoding.Geocoding(ctx, &geocodingsearchv7.GeocodingRequest{
+		Q: &q,
+	})
+	if err != nil {
+		panic(err) // TODO: handle error
+	}
+	// Handle result
+	for _, item := range response.Items {
+		fmt.Printf("Geocoded location lat/lng: %f %f  \n", item.Position.Lat, item.Position.Long)
+	}
+}
+```

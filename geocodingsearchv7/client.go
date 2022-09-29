@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"net/http"
@@ -24,6 +25,9 @@ type GeocodingService service
 // ReverseGeocodingService handles communication with reverse geocoding-related methods of the v7 HERE API.
 type ReverseGeocodingService service
 
+// BatchGeocodingService handles communication with batch geocoder-related methods of the v7 HERE API.
+type BatchGeocodingService service
+
 type Client struct {
 	// HTTP client used to communicate with the API.
 	client HTTPClient
@@ -34,6 +38,8 @@ type Client struct {
 	Geocoding *GeocodingService
 	// ReverseGeocoding service
 	ReverseGeocoding *ReverseGeocodingService
+	// BatchGeocoding service
+	BatchGeocoding *BatchGeocodingService
 }
 
 type service struct {
@@ -72,6 +78,8 @@ func NewClient(httpClient HTTPClient) *Client {
 	c.Geocoding = &GeocodingService{URL: geocodingURL, Client: c}
 	reverseGeocodingURL, _ := url.Parse("https://revgeocode.search.hereapi.com/v1/")
 	c.ReverseGeocoding = &ReverseGeocodingService{URL: reverseGeocodingURL, Client: c}
+	batchGeocoderURL, _ := url.Parse("https://batch.geocoder.ls.hereapi.com/6.2/")
+	c.BatchGeocoding = &BatchGeocodingService{URL: batchGeocoderURL, Client: c}
 	return c
 }
 
@@ -132,7 +140,7 @@ func (c *Client) Do(req *http.Request, v interface{}) error {
 		} else {
 			err = json.NewDecoder(resp.Body).Decode(v)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to json decode: %w", err)
 			}
 		}
 	}
@@ -151,4 +159,59 @@ func checkResponse(r *http.Response) error {
 		return err
 	}
 	return &responseError{Response: &response}
+}
+
+// DoXML sends an API request and returns the API response. The API response is XML decoded and stored in the value
+// pointed to by v, or returned as an error if an API error has occurred. If v implements the io.Writer interface,
+// the raw response will be written to v, without attempting to decode it.
+func (c *Client) DoXML(req *http.Request, v interface{}) error {
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if rerr := resp.Body.Close(); err == nil {
+			err = rerr
+		}
+	}()
+	err = checkResponseXML(resp)
+	if err != nil {
+		return fmt.Errorf("checkResponse failed: %v, %v", resp.StatusCode, err)
+	}
+	if v != nil {
+		if w, ok := v.(io.Writer); ok {
+			_, err = io.Copy(w, resp.Body)
+			if err != nil {
+				return fmt.Errorf("copy body failed: %v", err)
+			}
+		} else {
+			data, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return fmt.Errorf("read body: %v", err)
+			}
+			err = xml.Unmarshal(data, v)
+			if err != nil {
+				return fmt.Errorf("xml unmarshal failed: %w", err)
+			}
+		}
+	}
+	return err
+}
+
+// checkResponseXML checks the API response for errors, and returns them if present. A response is considered an
+// error if it has a status code outside the 200 range. It decodes the error as XML.
+func checkResponseXML(r *http.Response) error {
+	if c := r.StatusCode; c >= 200 && c <= 299 {
+		return nil
+	}
+	response := &HereErrorResponse{}
+	data, err := io.ReadAll(r.Body)
+	if err != nil {
+		return fmt.Errorf("failed to read error body: %w", err)
+	}
+	err = xml.Unmarshal(data, response)
+	if err != nil {
+		return fmt.Errorf("failed unmarshal error: %w", err)
+	}
+	return &responseError{Response: response}
 }
