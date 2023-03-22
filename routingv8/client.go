@@ -41,13 +41,15 @@ type service struct {
 	Client *Client
 }
 
-// A responseError reports the error caused by an API request.
-type responseError struct {
-	// HTTP response that caused this error
+// A ResponseError reports the error caused by an API request.
+type ResponseError struct {
+	// Parsed HTTP response that caused this error
 	Response *HereErrorResponse
+	// The HTTP body of the error response
+	HTTPBody string
 }
 
-func (r *responseError) Error() string {
+func (r *ResponseError) Error() string {
 	return fmt.Sprintf(
 		"Title: %v, Status: %d, Code: %v, Cause: %v, Action: %v",
 		r.Response.Title,
@@ -144,10 +146,18 @@ func checkResponse(r *http.Response) error {
 	if c := r.StatusCode; c >= 200 && c <= 299 {
 		return nil
 	}
-	var response HereErrorResponse
-	err := json.NewDecoder(r.Body).Decode(&response)
+	buf := new(bytes.Buffer)
+	_, err := io.Copy(buf, r.Body)
 	if err != nil {
 		return err
 	}
-	return &responseError{Response: &response}
+	var response HereErrorResponse
+	err = json.Unmarshal(buf.Bytes(), &response)
+	if err != nil {
+		return err
+	}
+	return &ResponseError{
+		Response: &response,
+		HTTPBody: buf.String(),
+	}
 }
