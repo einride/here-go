@@ -19,7 +19,7 @@ type RoutesMock struct {
 	error          *routingv8.HereErrorResponse
 }
 
-func (c *RoutesMock) Do(req *http.Request) (*http.Response, error) {
+func (c *RoutesMock) Do(_ *http.Request) (*http.Response, error) {
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
 	b, err := json.Marshal(c.responseBody)

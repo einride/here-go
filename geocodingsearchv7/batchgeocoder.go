@@ -144,10 +144,7 @@ func (s *BatchGeocodingService) BatchGeocoderDownload(
 	if err != nil {
 		return fmt.Errorf("unable to create get request: %v", err)
 	}
-	if err := s.Client.DoXML(r, w); err != nil {
-		return err
-	}
-	return nil
+	return s.Client.DoXML(r, w)
 }
 
 func geoPositionBody(p []*GeoWaypointRequest) []byte {

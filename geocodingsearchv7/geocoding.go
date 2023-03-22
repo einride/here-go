@@ -80,7 +80,7 @@ func FormatQualifiedQuery(address AddressRequest) string {
 	return qq
 }
 
-func addSubParam(query string, paramName string, value string) string {
+func addSubParam(query, paramName, value string) string {
 	if query != "" {
 		query = fmt.Sprintf("%s;", query)
 	}
