@@ -17,7 +17,7 @@ type ClientMock struct {
 	responseBody   routingv8.CalculateMatrixResponse
 }
 
-func (c *ClientMock) Do(req *http.Request) (*http.Response, error) {
+func (c *ClientMock) Do(_ *http.Request) (*http.Response, error) {
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
 	b, err := json.Marshal(c.responseBody)

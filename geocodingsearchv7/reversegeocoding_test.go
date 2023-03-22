@@ -17,7 +17,7 @@ type ReverseGeocodingMock struct {
 	responseBody   geocodingsearchv7.ReverseGeocodingResponse
 }
 
-func (c *ReverseGeocodingMock) Do(req *http.Request) (*http.Response, error) {
+func (c *ReverseGeocodingMock) Do(_ *http.Request) (*http.Response, error) {
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
 	b, err := json.Marshal(c.responseBody)

@@ -17,7 +17,7 @@ type BatchGeocodingMock struct {
 	responseBody   geocodingsearchv7.BatchGeocoderResponse
 }
 
-func (c *BatchGeocodingMock) Do(req *http.Request) (*http.Response, error) {
+func (c *BatchGeocodingMock) Do(_ *http.Request) (*http.Response, error) {
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
 	b, err := json.Marshal(c.responseBody)
