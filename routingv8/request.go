@@ -54,6 +54,10 @@ type RoutesRequest struct {
 	// Which attributes to return in the response.
 	// If not specified defaults to SummaryReturnAttribute.
 	Return []ReturnAttribute
+	// The time of departure.
+	// If not specified the current time is used.
+	// To not take time into account use DepartureTimeAny.
+	DepartureTime string
 }
 
 type ReturnAttribute string
