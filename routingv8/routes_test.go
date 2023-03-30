@@ -83,7 +83,6 @@ func TestRoutingervice_Routes(t *testing.T) {
 				},
 			},
 		},
-		ErrorCodes: routingv8.ErrorCodes{routingv8.ErrorCodeSuccess},
 	}
 	httpClient := RoutesMock{responseBody: exp, responseStatus: 200}
 	routingClient := routingv8.NewClient(&httpClient)

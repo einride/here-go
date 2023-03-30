@@ -59,8 +59,6 @@ type CalculateMatrixResponse struct {
 type RoutesResponse struct {
 	// Routes in the possible routes between the origin and target.
 	Routes []Route `json:"routes"`
-	// ErrorCodes contains potential route errors. Nil if no errors occurred.
-	ErrorCodes ErrorCodes `json:"errorCodes"`
 	// Contains a list of issues related to this route calculation.
 	Notices []RouteResponseNotice `json:"notices"`
 }
