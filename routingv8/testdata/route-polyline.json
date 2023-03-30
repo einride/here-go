@@ -1,0 +1,37 @@
+{
+  "routes": [
+    {
+      "id": "81e526c0-5693-4bc0-bdbb-239ecc2857e7",
+      "sections": [
+        {
+          "arrival": {
+            "place": {
+              "location": {
+                "lat": 52.53232637420297,
+                "lng": 13.378873988986016
+              },
+              "type": "place"
+            },
+            "time": "2019-12-09T11:15:43+01:00"
+          },
+          "departure": {
+            "place": {
+              "location": {
+                "lat": 52.53098367713392,
+                "lng": 13.384566977620125
+              },
+              "type": "place"
+            },
+            "time": "2019-12-09T11:13:51+01:00"
+          },
+          "id": "3b64cfbf-4a78-487b-ab37-0676b06d2456",
+          "polyline": "BGwynmkDu39wZvBtFAA3InfAAvHrdAAvHvbAAoGzF0FnGoGvHsOvRAA8L3NAAkSnVAAoGjIsEzFAAgFvHkDrJAAwHrJoVvb0ezoBAAjInVAA3N_iBAAzJ_Z",
+          "transport": {
+            "mode": "car"
+          },
+          "type": "vehicle"
+        }
+      ]
+    }
+  ]
+}
