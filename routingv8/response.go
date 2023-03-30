@@ -82,6 +82,10 @@ type RouteResponseNotice struct {
 	Code string `json:"code"`
 	// Describes the impact a notice has on the resource to which the notice is attached.
 	Severity NoticeSeverity `json:"severity"`
+	// Additional details about the notice.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Details []json.RawMessage `json:"details"`
 }
 
 type Notice struct {
@@ -93,6 +97,10 @@ type Notice struct {
 	Code string `json:"code"`
 	// Describes the impact a notice has on the resource to which the notice is attached.
 	Severity NoticeSeverity `json:"severity"`
+	// Additional details about the notice.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Details []json.RawMessage `json:"details"`
 }
 
 type NoticeSeverity string
