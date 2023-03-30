@@ -26,7 +26,13 @@ func (s *RoutingService) Routes(
 	}
 
 	values := make(url.Values)
-	values.Add("return", "summary")
+	returns := []ReturnAttribute{"summary"}
+	if len(req.Return) > 0 {
+		returns = req.Return
+	}
+	for _, attribute := range returns {
+		values.Add("return", string(attribute))
+	}
 	values.Add("transportMode", tm)
 	values.Add("origin", fmt.Sprintf("%v,%v", req.Origin.Lat, req.Origin.Long))
 	values.Add("destination", fmt.Sprintf("%v,%v", req.Destination.Lat, req.Destination.Long))
