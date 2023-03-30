@@ -51,7 +51,17 @@ type RoutesRequest struct {
 	Destination   GeoWaypoint
 	TransportMode TransportMode
 	AvoidAreas    []AreaFeature
+	// Which attributes to return in the response.
+	// If not specified defaults to SummaryReturnAttribute.
+	Return []ReturnAttribute
 }
+
+type ReturnAttribute string
+
+const (
+	PolylineReturnAttribute ReturnAttribute = "polyline"
+	SummaryReturnAttribute  ReturnAttribute = "summary"
+)
 
 type GeoWaypoint struct {
 	Lat  float64 `json:"lat"`
