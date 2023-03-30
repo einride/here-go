@@ -61,6 +61,8 @@ type RoutesResponse struct {
 	Routes []Route `json:"routes"`
 	// ErrorCodes contains potential route errors. Nil if no errors occurred.
 	ErrorCodes ErrorCodes `json:"errorCodes"`
+	// Contains a list of issues related to this route calculation.
+	Notices []RouteResponseNotice `json:"notices"`
 }
 
 // Route contains all the sections of a route.
@@ -69,7 +71,43 @@ type Route struct {
 	ID string `json:"id"`
 	// Sections in the route
 	Sections []Section `json:"sections"`
+	// Contains a list of issues related to this route calculation.
+	Notices []Notice `json:"notices"`
 }
+
+type RouteResponseNotice struct {
+	// Human-readable notice description.
+	Title string `json:"title"`
+	// Machine-readable notice code.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Code string `json:"code"`
+	// Describes the impact a notice has on the resource to which the notice is attached.
+	Severity NoticeSeverity `json:"severity"`
+}
+
+type Notice struct {
+	// Human-readable notice description.
+	Title string `json:"title"`
+	// Machine-readable notice code.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Code string `json:"code"`
+	// Describes the impact a notice has on the resource to which the notice is attached.
+	Severity NoticeSeverity `json:"severity"`
+}
+
+type NoticeSeverity string
+
+const (
+	// CriticalNoticeSeverity is used to indicate that the notice must not be ignored,
+	// even if the type of notice is not known to the user.
+	// Any associated resource (e.g., route section) must not be used without further evaluation.
+	CriticalNoticeSeverity NoticeSeverity = "critical"
+	// InfoNoticeSeverity is used to indicate that the notice is for informative purposes,
+	// but does not affect usability of the route.
+	InfoNoticeSeverity NoticeSeverity = "info"
+)
 
 // Section with the information of the departure, arrival location and summary.
 type Section struct {
