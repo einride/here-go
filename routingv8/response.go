@@ -103,6 +103,21 @@ type Notice struct {
 	Details []json.RawMessage `json:"details"`
 }
 
+type VehicleNotice struct {
+	// Human-readable notice description.
+	Title string `json:"title"`
+	// Machine-readable notice code.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Code string `json:"code"`
+	// Describes the impact a notice has on the resource to which the notice is attached.
+	Severity NoticeSeverity `json:"severity"`
+	// Additional details about the notice.
+	// See https://developer.here.com/documentation/routing-api/api-reference-swagger.html
+	// for possible values.
+	Details []json.RawMessage `json:"details"`
+}
+
 type NoticeSeverity string
 
 const (
@@ -129,6 +144,8 @@ type Section struct {
 	Summary Summary `json:"summary"`
 	// Polyline of the section.
 	Polyline Polyline `json:"polyline"`
+	// Contains a list of issues related to this section of the route.
+	Notices []VehicleNotice `json:"notices"`
 }
 
 type VehicleDeparture struct {
