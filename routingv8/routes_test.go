@@ -64,15 +64,19 @@ func TestRoutingervice_Routes(t *testing.T) {
 					{
 						ID:   "section-1",
 						Type: "veicle",
-						Departure: routingv8.Place{
-							Type:             "place",
-							Location:         origin,
-							OriginalLocation: origin,
+						Departure: routingv8.VehicleDeparture{
+							Place: routingv8.Place{
+								Type:             "place",
+								Location:         origin,
+								OriginalLocation: origin,
+							},
 						},
-						Arrival: routingv8.Place{
-							Type:             "place",
-							Location:         destination,
-							OriginalLocation: destination,
+						Arrival: routingv8.VehicleDeparture{
+							Place: routingv8.Place{
+								Type:             "place",
+								Location:         destination,
+								OriginalLocation: destination,
+							},
 						},
 						Summary: routingv8.Summary{
 							Duration:     243,

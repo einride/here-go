@@ -20,10 +20,28 @@ func TestUnmarshalRoute(t *testing.T) {
 					ID: "bfaed7d0-19c7-4e72-81b7-24eeb148b62b",
 					Sections: []Section{
 						{
-							ID:        "85357f8f-00ad-447e-a510-d8c02e0b264f",
-							Type:      "vehicle",
-							Arrival:   Place{},
-							Departure: Place{},
+							ID:   "85357f8f-00ad-447e-a510-d8c02e0b264f",
+							Type: "vehicle",
+							Arrival: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  52.53232637420297,
+										Long: 13.378873988986015,
+									},
+									OriginalLocation: GeoWaypoint{},
+								},
+							},
+							Departure: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  52.53098367713392,
+										Long: 13.384566977620125,
+									},
+									OriginalLocation: GeoWaypoint{},
+								},
+							},
 							Summary: Summary{
 								Duration:     123,
 								Length:       538,
@@ -45,11 +63,29 @@ func TestUnmarshalRoute(t *testing.T) {
 					ID: "81e526c0-5693-4bc0-bdbb-239ecc2857e7",
 					Sections: []Section{
 						{
-							ID:        "3b64cfbf-4a78-487b-ab37-0676b06d2456",
-							Type:      "vehicle",
-							Arrival:   Place{},
-							Departure: Place{},
-							Summary:   Summary{},
+							ID:   "3b64cfbf-4a78-487b-ab37-0676b06d2456",
+							Type: "vehicle",
+							Arrival: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  52.53232637420297,
+										Long: 13.378873988986015,
+									},
+									OriginalLocation: GeoWaypoint{},
+								},
+							},
+							Departure: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  52.53098367713392,
+										Long: 13.384566977620125,
+									},
+									OriginalLocation: GeoWaypoint{},
+								},
+							},
+							Summary: Summary{},
 							Polyline: "BGwynmkDu39wZvBtFAA3InfAAvHrdAAvHvbAAoGzF0FnGoGvHsOvRAA8L3NAAkSnVAAo" +
 								"GjIsEzFAAgFvHkDrJAAwHrJoVvb0ezoBAAjInVAA3N_iBAAzJ_Z",
 						},
@@ -67,10 +103,34 @@ func TestUnmarshalRoute(t *testing.T) {
 					ID: "7a63b7b6-7b62-4d80-a7cf-3edd1eafa2f9",
 					Sections: []Section{
 						{
-							ID:        "7cb3dcba-6d43-41e0-95eb-3a3f3af77340",
-							Type:      "vehicle",
-							Arrival:   Place{},
-							Departure: Place{},
+							ID:   "7cb3dcba-6d43-41e0-95eb-3a3f3af77340",
+							Type: "vehicle",
+							Arrival: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  51.1086699,
+										Long: 17.0387979,
+									},
+									OriginalLocation: GeoWaypoint{
+										Lat:  51.1086709,
+										Long: 17.0388039,
+									},
+								},
+							},
+							Departure: VehicleDeparture{
+								Place: Place{
+									Type: "place",
+									Location: GeoWaypoint{
+										Lat:  51.0193731,
+										Long: 17.1613281,
+									},
+									OriginalLocation: GeoWaypoint{
+										Lat:  51.019519,
+										Long: 17.1615459,
+									},
+								},
+							},
 							Summary: Summary{
 								Duration:     1624,
 								Length:       13451,

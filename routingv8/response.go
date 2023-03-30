@@ -122,13 +122,17 @@ type Section struct {
 	// The type used in the section
 	Type string `json:"type"`
 	// Departure is the location of the departure
-	Departure Place `json:"departure"`
+	Departure VehicleDeparture `json:"departure"`
 	// Arrival is the location of the arrival
-	Arrival Place `json:"arrival"`
+	Arrival VehicleDeparture `json:"arrival"`
 	// Summary contain info on the duration and length of section
 	Summary Summary `json:"summary"`
 	// Polyline of the section.
 	Polyline Polyline `json:"polyline"`
+}
+
+type VehicleDeparture struct {
+	Place Place `json:"place"`
 }
 
 // Place with lat and long info on where the place is.
