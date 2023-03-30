@@ -119,6 +119,8 @@ type Section struct {
 	Arrival Place `json:"arrival"`
 	// Summary contain info on the duration and length of section
 	Summary Summary `json:"summary"`
+	// Polyline of the section.
+	Polyline Polyline `json:"polyline"`
 }
 
 // Place with lat and long info on where the place is.
@@ -140,6 +142,10 @@ type Summary struct {
 	// BaseDuration is the duration without dynamic traffic information
 	BaseDuration int32 `json:"baseDuration"`
 }
+
+// Polyline of a route section, encoded as a  Flexible Polyline.
+// See https://github.com/heremaps/flexible-polyline
+type Polyline string
 
 // HereErrorResponse is returned when an error is returned from the Here Maps API.
 type HereErrorResponse struct {
