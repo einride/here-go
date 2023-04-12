@@ -26,13 +26,15 @@ func (s *RoutingService) Routes(
 	}
 
 	values := make(url.Values)
-	returns := []ReturnAttribute{"summary"}
+	returns := make([]string, 0, len(req.Return))
 	if len(req.Return) > 0 {
-		returns = req.Return
+		for _, attribute := range req.Return {
+			returns = append(returns, string(attribute))
+		}
+	} else {
+		returns = []string{string(SummaryReturnAttribute)}
 	}
-	for _, attribute := range returns {
-		values.Add("return", string(attribute))
-	}
+	values.Add("return", strings.Join(returns, ","))
 	if req.DepartureTime != "" {
 		values.Add("departureTime", req.DepartureTime)
 	}
@@ -41,18 +43,17 @@ func (s *RoutingService) Routes(
 	values.Add("destination", fmt.Sprintf("%v,%v", req.Destination.Lat, req.Destination.Long))
 
 	if req.AvoidAreas != nil {
-		var avoidString string
-		for _, a := range req.AvoidAreas {
-			avoid := a.String()
-			if avoid == invalid {
+		areas := make([]string, 0, len(req.AvoidAreas))
+		for _, area := range req.AvoidAreas {
+			a := area.String()
+			if a == invalid {
 				return nil, fmt.Errorf("invalid avoid area")
 			}
-			if avoid != unspecified {
-				avoidString += fmt.Sprintf("%s,%s", avoidString, avoid)
+			if a != unspecified {
+				areas = append(areas, a)
 			}
 		}
-		avoidString = strings.Trim(avoidString, ",")
-		values.Add("avoid[features]", avoidString)
+		values.Add("avoid[features]", strings.Join(areas, ","))
 	}
 
 	r, err := s.Client.NewRequest(ctx, u, http.MethodGet, values.Encode(), nil)
