@@ -132,6 +132,36 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767" +
 				"&return=summary&transportMode=car",
 		},
+		{
+			name: "multiple avoid areas",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeCar,
+				AvoidAreas: []routingv8.AreaFeature{
+					routingv8.AreaFeatureFerry,
+					routingv8.AreaFeatureTollRoad,
+					routingv8.AreaFeatureTunnel,
+					routingv8.AreaFeatureControlledAccessHighway,
+				},
+			},
+			expected: "avoid%5Bfeatures%5D=ferry%2CtollRoad%2Ctunnel%2CcontrolledAccessHighway" +
+				"&destination=59.337492%2C18.063672&origin=57.707752%2C11.949767&return=summary&transportMode=car",
+		},
+		{
+			name: "multiple return attributes",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeCar,
+				Return: []routingv8.ReturnAttribute{
+					routingv8.SummaryReturnAttribute,
+					routingv8.PolylineReturnAttribute,
+				},
+			},
+			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767" +
+				"&return=summary%2Cpolyline&transportMode=car",
+		},
 	} {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
