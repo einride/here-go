@@ -14,12 +14,14 @@ import (
 )
 
 type RoutesMock struct {
-	responseStatus int
-	responseBody   routingv8.RoutesResponse
-	error          *routingv8.HereErrorResponse
+	requestRawQuery string
+	responseStatus  int
+	responseBody    routingv8.RoutesResponse
+	error           *routingv8.HereErrorResponse
 }
 
-func (c *RoutesMock) Do(_ *http.Request) (*http.Response, error) {
+func (c *RoutesMock) Do(req *http.Request) (*http.Response, error) {
+	c.requestRawQuery = req.URL.RawQuery
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
 	b, err := json.Marshal(c.responseBody)
@@ -98,6 +100,49 @@ func TestRoutingervice_Routes(t *testing.T) {
 	})
 	assert.NilError(t, err)
 	assert.DeepEqual(t, &exp, got)
+}
+
+func TestRoutingervice_Routes_QueryParams(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+
+	// Einride Gothenburg.
+	origin := routingv8.GeoWaypoint{
+		Lat:  57.707752,
+		Long: 11.949767,
+	}
+	// Einride Stockholm.
+	destination := routingv8.GeoWaypoint{
+		Lat:  59.337492,
+		Long: 18.063672,
+	}
+
+	for _, tt := range []struct {
+		name     string
+		request  *routingv8.RoutesRequest
+		expected string
+	}{
+		{
+			name: "minimal",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeCar,
+			},
+			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767" +
+				"&return=summary&transportMode=car",
+		},
+	} {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client := RoutesMock{}
+			routingClient := routingv8.NewClient(&client)
+
+			_, _ = routingClient.Routing.Routes(ctx, tt.request)
+			assert.Equal(t, client.requestRawQuery, tt.expected)
+		})
+	}
 }
 
 func TestRoutingervice_Routes_Error(t *testing.T) {
