@@ -49,13 +49,15 @@ func TestRoutingervice_Routes(t *testing.T) {
 
 	// Einride Gothenburg.
 	origin := routingv8.GeoWaypoint{
-		Lat:  57.707752,
-		Long: 11.949767,
+		Elevation: 1,
+		Lat:       57.707752,
+		Long:      11.949767,
 	}
 	// Einride Stockholm.
 	destination := routingv8.GeoWaypoint{
-		Lat:  59.337492,
-		Long: 18.063672,
+		Elevation: 2,
+		Lat:       59.337492,
+		Long:      18.063672,
 	}
 
 	exp := routingv8.RoutesResponse{
