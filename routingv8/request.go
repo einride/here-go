@@ -63,13 +63,16 @@ type RoutesRequest struct {
 type ReturnAttribute string
 
 const (
-	PolylineReturnAttribute ReturnAttribute = "polyline"
-	SummaryReturnAttribute  ReturnAttribute = "summary"
+	PolylineReturnAttribute  ReturnAttribute = "polyline"
+	SummaryReturnAttribute   ReturnAttribute = "summary"
+	ElevationReturnAttribute ReturnAttribute = "elevation"
 )
 
 type GeoWaypoint struct {
-	Lat  float64 `json:"lat"`
-	Long float64 `json:"lng"`
+	// Elevation is available in responses when using the ElevationReturnAttribute
+	Elevation float64 `json:"elv"`
+	Lat       float64 `json:"lat"`
+	Long      float64 `json:"lng"`
 }
 
 // DepartureTimeAny enforces non time-aware routing.
