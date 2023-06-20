@@ -47,6 +47,8 @@ type ResponseError struct {
 	Response *HereErrorResponse
 	// The HTTP body of the error response
 	HTTPBody string
+	// The HTTP status code of the response
+	HTTPStatusCode int
 }
 
 func (r *ResponseError) Error() string {
@@ -157,7 +159,8 @@ func checkResponse(r *http.Response) error {
 		return err
 	}
 	return &ResponseError{
-		Response: &response,
-		HTTPBody: buf.String(),
+		Response:       &response,
+		HTTPBody:       buf.String(),
+		HTTPStatusCode: r.StatusCode,
 	}
 }
