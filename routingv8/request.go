@@ -70,7 +70,9 @@ const (
 
 type GeoWaypoint struct {
 	// Elevation is available in responses when using the ElevationReturnAttribute
-	Elevation float64 `json:"elv"`
+	// TODO(odsod): Consider refactoring this to another message.
+	//              We get 400 BAD REQUEST if we provide elv on outgoing messages.
+	Elevation float64 `json:"elv,omitempty"`
 	Lat       float64 `json:"lat"`
 	Long      float64 `json:"lng"`
 }
