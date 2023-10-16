@@ -48,13 +48,17 @@ type service struct {
 	Client *Client
 }
 
-// A responseError reports the error caused by an API request.
-type responseError struct {
+// A ResponseError reports the error caused by an API request.
+type ResponseError struct {
 	// HTTP response that caused this error
 	Response *HereErrorResponse
+	// The HTTP body of the error response
+	HTTPBody string
+	// The HTTP status code of the response
+	HTTPStatusCode int
 }
 
-func (r *responseError) Error() string {
+func (r *ResponseError) Error() string {
 	return fmt.Sprintf(
 		"Title: %v, Status: %d, Code: %v, Cause: %v, Action: %v",
 		r.Response.Title,
@@ -153,12 +157,21 @@ func checkResponse(r *http.Response) error {
 	if c := r.StatusCode; c >= 200 && c <= 299 {
 		return nil
 	}
-	var response HereErrorResponse
-	err := json.NewDecoder(r.Body).Decode(&response)
+	buf := new(bytes.Buffer)
+	_, err := io.Copy(buf, r.Body)
 	if err != nil {
 		return err
 	}
-	return &responseError{Response: &response}
+	var response HereErrorResponse
+	err = json.Unmarshal(buf.Bytes(), &response)
+	if err != nil {
+		return err
+	}
+	return &ResponseError{
+		Response:       &response,
+		HTTPBody:       buf.String(),
+		HTTPStatusCode: r.StatusCode,
+	}
 }
 
 // DoXML sends an API request and returns the API response. The API response is XML decoded and stored in the value
@@ -204,14 +217,19 @@ func checkResponseXML(r *http.Response) error {
 	if c := r.StatusCode; c >= 200 && c <= 299 {
 		return nil
 	}
-	response := &HereErrorResponse{}
-	data, err := io.ReadAll(r.Body)
+	buf := new(bytes.Buffer)
+	_, err := io.Copy(buf, r.Body)
 	if err != nil {
-		return fmt.Errorf("failed to read error body: %w", err)
+		return err
 	}
-	err = xml.Unmarshal(data, response)
+	response := HereErrorResponse{}
+	err = xml.Unmarshal(buf.Bytes(), &response)
 	if err != nil {
 		return fmt.Errorf("failed unmarshal error: %w", err)
 	}
-	return &responseError{Response: response}
+	return &ResponseError{
+		Response:       &response,
+		HTTPBody:       buf.String(),
+		HTTPStatusCode: r.StatusCode,
+	}
 }
