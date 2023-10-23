@@ -2,4 +2,4 @@ module sage
 
 go 1.20
 
-require go.einride.tech/sage v0.243.0
+require go.einride.tech/sage v0.244.0
