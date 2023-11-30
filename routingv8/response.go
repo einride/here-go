@@ -2,6 +2,7 @@ package routingv8
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type ErrorCodes []ErrorCode
@@ -146,6 +147,53 @@ type Section struct {
 	Polyline Polyline `json:"polyline"`
 	// Contains a list of issues related to this section of the route.
 	Notices []VehicleNotice `json:"notices"`
+	// Spans attached to a `Section` describing vehicle content.
+	Spans []Span `json:"spans"`
+}
+
+type Span struct {
+	// Length of the span.
+	Length int `json:"length"`
+	// Names of the span.
+	Names []Name `json:"names"`
+	// Speed in meters per second, or "unlimited" indicating that the speed is unlimited, e.g., on a German autobahn
+	MaxSpeed MaxSpeedEither `json:"maxSpeed"`
+	// Spans attached to a Section describing vehicle content.
+	Offset int `json:"offset"`
+}
+
+// MaxSpeedEither holds either a speed or unlimited is true if speed is unlimited.
+// MaxSpeed and Unlimited are mutually exclusive.
+type MaxSpeedEither struct {
+	// MaxSpeed of the span.
+	MaxSpeed float32
+	// Unlimited is true if unlimited speed.
+	Unlimited bool
+}
+
+func (m *MaxSpeedEither) UnmarshalJSON(b []byte) error {
+	if b[0] == '"' {
+		// Value is a string
+		var s string
+		if err := json.Unmarshal(b, &s); err != nil {
+			return err
+		}
+		expected := "unlimited"
+		if s != expected {
+			return fmt.Errorf("expected value '%s' to be '%s'", s, expected)
+		}
+		m.Unlimited = true
+		return nil
+	}
+	return json.Unmarshal(b, &m.MaxSpeed)
+}
+
+// Name for the span, e.g., a street name or a transport name.
+type Name struct {
+	// Language in BCP47 format.
+	Language string `json:"language"`
+	// Value written in the language specified in the Language property.
+	Value string `json:"value"`
 }
 
 type VehicleDeparture struct {
