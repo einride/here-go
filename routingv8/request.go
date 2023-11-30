@@ -58,6 +58,8 @@ type RoutesRequest struct {
 	// If not specified the current time is used.
 	// To not take time into account use DepartureTimeAny.
 	DepartureTime string
+	// Spans define which content attributes that are included in the response spans
+	Spans []SpanAttribute
 }
 
 type ReturnAttribute string
@@ -482,4 +484,24 @@ func (t *AreaFeature) MarshalJSON() ([]byte, error) {
 	buffer.WriteString(t.String())
 	buffer.WriteString(`"`)
 	return buffer.Bytes(), nil
+}
+
+type SpanAttribute string
+
+// For available span attributes to implementation see:
+// https://www.here.com/docs/bundle/routing-api-v8-api-reference/page/index.html#tag/Routing/operation/calculateRoutes
+const (
+	SpanAttributeNames    SpanAttribute = "names"
+	SpanAttributeMaxSpeed SpanAttribute = "maxSpeed"
+)
+
+func (t *SpanAttribute) String() string {
+	switch *t {
+	case SpanAttributeNames:
+		return string(SpanAttributeNames)
+	case SpanAttributeMaxSpeed:
+		return string(SpanAttributeMaxSpeed)
+	default:
+		return invalid
+	}
 }

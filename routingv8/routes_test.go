@@ -123,6 +123,7 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 		name     string
 		request  *routingv8.RoutesRequest
 		expected string
+		errStr   string
 	}{
 		{
 			name: "minimal",
@@ -164,6 +165,40 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767" +
 				"&return=summary%2Cpolyline&transportMode=car",
 		},
+		{
+			name: "with spans",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeCar,
+				Return: []routingv8.ReturnAttribute{
+					routingv8.SummaryReturnAttribute,
+					routingv8.PolylineReturnAttribute,
+				},
+				Spans: []routingv8.SpanAttribute{
+					routingv8.SpanAttributeNames,
+					routingv8.SpanAttributeMaxSpeed,
+				},
+			},
+			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767" +
+				"&return=summary%2Cpolyline&spans=names%2CmaxSpeed&transportMode=car",
+		},
+		{
+			name: "with spans without wanted polyline returned",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeCar,
+				Return: []routingv8.ReturnAttribute{
+					routingv8.SummaryReturnAttribute,
+				},
+				Spans: []routingv8.SpanAttribute{
+					routingv8.SpanAttributeNames,
+					routingv8.SpanAttributeMaxSpeed,
+				},
+			},
+			errStr: "spans parameter also requires that the polyline option is set in the return parameter",
+		},
 	} {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
@@ -171,7 +206,10 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 			client := RoutesMock{}
 			routingClient := routingv8.NewClient(&client)
 
-			_, _ = routingClient.Routing.Routes(ctx, tt.request)
+			_, err := routingClient.Routing.Routes(ctx, tt.request)
+			if tt.errStr != "" {
+				assert.ErrorContains(t, err, tt.errStr)
+			}
 			assert.Equal(t, client.requestRawQuery, tt.expected)
 		})
 	}

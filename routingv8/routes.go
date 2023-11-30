@@ -2,6 +2,7 @@ package routingv8
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -41,7 +42,16 @@ func (s *RoutingService) Routes(
 	values.Add("transportMode", tm)
 	values.Add("origin", fmt.Sprintf("%v,%v", req.Origin.Lat, req.Origin.Long))
 	values.Add("destination", fmt.Sprintf("%v,%v", req.Destination.Lat, req.Destination.Long))
-
+	if len(req.Spans) > 0 {
+		if !returnContains(req.Return, PolylineReturnAttribute) {
+			return nil, errors.New("spans parameter also requires that the polyline option is set in the return parameter")
+		}
+		spanStrings := make([]string, 0, len(req.Spans))
+		for _, span := range req.Spans {
+			spanStrings = append(spanStrings, string(span))
+		}
+		values.Add("spans", strings.Join(spanStrings, ","))
+	}
 	if req.AvoidAreas != nil {
 		areas := make([]string, 0, len(req.AvoidAreas))
 		for _, area := range req.AvoidAreas {
@@ -65,4 +75,13 @@ func (s *RoutingService) Routes(
 		return nil, err
 	}
 	return &resp, nil
+}
+
+func returnContains(requested []ReturnAttribute, needle ReturnAttribute) bool {
+	for _, attr := range requested {
+		if attr == needle {
+			return true
+		}
+	}
+	return false
 }

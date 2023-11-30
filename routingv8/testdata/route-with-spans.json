@@ -1,0 +1,64 @@
+{
+  "routes": [
+    {
+      "id": "eacbd184-24ff-43d2-84e7-08642957cb0e",
+      "sections": [
+        {
+          "id": "bfcb3fb9-2487-4155-9eb0-602789698fa3",
+          "type": "vehicle",
+          "departure": {
+            "place": {
+              "type": "place",
+              "location": {
+                "lat": 54.2213551,
+                "lng": 10.901825
+              },
+              "originalLocation": {
+                "lat": 54.2213531,
+                "lng": 10.9017949
+              }
+            }
+          },
+          "arrival": {
+            "place": {
+              "type": "place",
+              "location": {
+                "lat": 54.1528099,
+                "lng": 10.8527
+              },
+              "originalLocation": {
+                "lat": 54.1528244,
+                "lng": 10.8526714
+              }
+            }
+          },
+          "summary": {
+            "duration": 258,
+            "length": 8615,
+            "baseDuration": 258
+          },
+          "polyline": "BG2ittnDi0s5UxBK_J8Bze8G_Y4D3SwC_EU7LUz8BkD7kBnBjrB7B7LUvHA3IAnajD_lC_J3wBjIzwCzP3rB_J3pCjSjcvHnqDnanlDrYvH7BjI7BvCTvnFvqBjmB3I7sC3Sv5Lj9C3vEnkBnwF3rB3hB3Iv0BvMz1CjXzyBrOjhBzKrgC7Vr2BjXvgBjNnpBjS7fzP7kBrTvb_O_OjI_djSztBvbjc_TrsB_dj6BjrBjcnV3c3X7pB_iBz3B_xB3NjNjhB7fjwB3wBvvBzyB_EzFvH3I_sBnzBnzBn9B7kB7uBjwBzhC_7B_0CjX_iBj6Bn7Cr7BngDr0CzsE7jEn9GvrDz0FzjB_7B7VjhBnanuBjwB_vCvvBrvC36B_jDrYrnB3uCz9D3NvWnLvR_djwBvlBn4BnkBv0Bz1C75DjhBrsBzjBztBrOjSnQ_T",
+          "spans": [
+            {
+              "offset": 0,
+              "maxSpeed": "unlimited",
+              "names": [
+                {
+                  "value": "Möllner Straße",
+                  "language": "de"
+                }
+              ]
+            },
+            {
+              "offset": 80,
+              "maxSpeed": 33.3333359
+            }
+          ],
+          "transport": {
+            "mode": "car"
+          }
+        }
+      ]
+    }
+  ]
+}

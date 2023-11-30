@@ -206,6 +206,85 @@ func TestUnmarshalRoute(t *testing.T) {
 			rawMessageEqual(),
 		)
 	})
+	t.Run("route-with-spans.json", func(t *testing.T) {
+		t.Parallel()
+		resp := unmarshalRouteResponseFromFile(t, "route-with-spans.json")
+		assert.DeepEqual(
+			t,
+			resp,
+			RoutesResponse{
+				Routes: []Route{
+					{
+						ID: "eacbd184-24ff-43d2-84e7-08642957cb0e",
+						Sections: []Section{
+							{
+								ID:   "bfcb3fb9-2487-4155-9eb0-602789698fa3",
+								Type: "vehicle",
+								Arrival: VehicleDeparture{
+									Place: Place{
+										Type: "place",
+										Location: GeoWaypoint{
+											Lat:  54.1528099,
+											Long: 10.8527,
+										},
+										OriginalLocation: GeoWaypoint{
+											Lat:  54.1528244,
+											Long: 10.8526714,
+										},
+									},
+								},
+								Departure: VehicleDeparture{
+									Place: Place{
+										Type: "place",
+										Location: GeoWaypoint{
+											Lat:  54.2213551,
+											Long: 10.901825,
+										},
+										OriginalLocation: GeoWaypoint{
+											Lat:  54.2213531,
+											Long: 10.9017949,
+										},
+									},
+								},
+								Summary: Summary{
+									Duration:     258,
+									Length:       8615,
+									BaseDuration: 258,
+								},
+								Polyline: "BG2ittnDi0s5UxBK_J8Bze8G_Y4D3SwC_EU7LUz8BkD7kBnBjrB7B7LUvHA3IAnajD_lC_J3" +
+									"wBjIzwCzP3rB_J3pCjSjcvHnqDnanlDrYvH7BjI7BvCTvnFvqBjmB3I7sC3Sv5Lj9C3vEnkBnwF3rB" +
+									"3hB3Iv0BvMz1CjXzyBrOjhBzKrgC7Vr2BjXvgBjNnpBjS7fzP7kBrTvb_O_OjI_djSztBvbjc_TrsB" +
+									"_dj6BjrBjcnV3c3X7pB_iBz3B_xB3NjNjhB7fjwB3wBvvBzyB_EzFvH3I_sBnzBnzBn9B7kB7uBjwB" +
+									"zhC_7B_0CjX_iBj6Bn7Cr7BngDr0CzsE7jEn9GvrDz0FzjB_7B7VjhBnanuBjwB_vCvvBrvC36B_jD" +
+									"rYrnB3uCz9D3NvWnLvR_djwBvlBn4BnkBv0Bz1C75DjhBrsBzjBztBrOjSnQ_T",
+								Spans: []Span{
+									{
+										Offset: 0,
+										MaxSpeed: MaxSpeedEither{
+											Unlimited: true,
+										},
+										Names: []Name{
+											{
+												Language: "de",
+												Value:    "Möllner Straße",
+											},
+										},
+									},
+									{
+										Offset: 80,
+										MaxSpeed: MaxSpeedEither{
+											MaxSpeed: 33.3333359,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			rawMessageEqual(),
+		)
+	})
 }
 
 func unmarshalRouteResponseFromFile(t *testing.T, filename string) RoutesResponse {
