@@ -80,7 +80,7 @@ type GeoWaypoint struct {
 }
 
 // DepartureTimeAny enforces non time-aware routing.
-const DepartureTimeAny = "any"
+const DepartureTimeAny string = "any"
 
 type Profile int
 
