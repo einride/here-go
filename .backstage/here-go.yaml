@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: here-go
+  title: HERE Go
+  description: |
+    Go SDK for the HERE Maps API.
+spec:
+  type: go-library
+  system: backend-sdk
+  lifecycle: production
+  owner: platform-engineering
