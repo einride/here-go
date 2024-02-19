@@ -13,9 +13,3 @@ jobs:
 
       - name: Make
         run: make
-
-      - name: Report Code Coverage
-        uses: codecov/codecov-action@v4
-        with:
-          file: .sage/build/go/coverage/go-test.txt
-          fail_ci_if_error: true
