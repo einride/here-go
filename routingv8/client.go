@@ -52,6 +52,13 @@ type ResponseError struct {
 }
 
 func (r *ResponseError) Error() string {
+	if r.Response == nil || r.Response.Status == 0 {
+		return fmt.Sprintf(
+			"Response: %s StatusCode: %d",
+			r.HTTPBody,
+			r.HTTPStatusCode,
+		)
+	}
 	return fmt.Sprintf(
 		"Title: %v, Status: %d, Code: %v, Cause: %v, Action: %v",
 		r.Response.Title,
