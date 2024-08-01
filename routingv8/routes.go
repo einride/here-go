@@ -2,6 +2,7 @@ package routingv8
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -28,12 +29,11 @@ func (s *RoutingService) Routes(
 
 	values := make(url.Values)
 	returns := make([]string, 0, len(req.Return))
-	if len(req.Return) > 0 {
-		for _, attribute := range req.Return {
-			returns = append(returns, string(attribute))
-		}
-	} else {
-		returns = []string{string(SummaryReturnAttribute)}
+	for _, attribute := range req.Return {
+		returns = append(returns, string(attribute))
+	}
+	if len(returns) == 0 {
+		returns = append(returns, string(SummaryReturnAttribute))
 	}
 	values.Add("return", strings.Join(returns, ","))
 	if req.DepartureTime != "" {
@@ -67,6 +67,70 @@ func (s *RoutingService) Routes(
 	}
 
 	r, err := s.Client.NewRequest(ctx, u, http.MethodGet, values.Encode(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("unable to create get request: %v", err)
+	}
+	var resp RoutesResponse
+	if err := s.Client.Do(r, &resp); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// RouteImport returns a route from a sequence of trace points.
+// See https://www.here.com/docs/bundle/routing-api-developer-guide-v8/page/concepts/route-import.html
+// and https://www.here.com/docs/bundle/routing-api-v8-api-reference/page/index.html#tag/Routing/operation/importRoute
+// for details.
+func (s *RoutingService) RouteImport(
+	ctx context.Context,
+	req *RouteImportRequest,
+) (_ *RoutesResponse, err error) {
+	tm := req.TransportMode.String()
+	if tm == invalid || tm == unspecified {
+		return nil, fmt.Errorf("invalid transportmode")
+	}
+
+	if len(req.Trace) < 2 {
+		return nil, fmt.Errorf("trace parameter must contain at least 2 waypoints")
+	}
+
+	u, err := s.URL.Parse("import")
+	if err != nil {
+		return nil, err
+	}
+
+	values := make(url.Values)
+	returns := make([]string, 0, len(req.Return))
+	for _, attribute := range req.Return {
+		returns = append(returns, string(attribute))
+	}
+	if len(returns) == 0 {
+		returns = append(returns, string(SummaryReturnAttribute))
+	}
+	values.Add("return", strings.Join(returns, ","))
+	if req.DepartureTime != "" {
+		values.Add("departureTime", req.DepartureTime)
+	}
+	values.Add("transportMode", tm)
+	if len(req.Spans) > 0 {
+		if !returnContains(req.Return, PolylineReturnAttribute) {
+			return nil, errors.New("spans parameter also requires that the polyline option is set in the return parameter")
+		}
+		spanStrings := make([]string, 0, len(req.Spans))
+		for _, span := range req.Spans {
+			spanStrings = append(spanStrings, string(span))
+		}
+		values.Add("spans", strings.Join(spanStrings, ","))
+	}
+
+	bytes, err := json.Marshal(&RouteImportRequestBody{
+		Trace: req.Trace,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	r, err := s.Client.NewRequest(ctx, u, http.MethodPost, values.Encode(), bytes)
 	if err != nil {
 		return nil, fmt.Errorf("unable to create get request: %v", err)
 	}

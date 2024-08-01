@@ -505,3 +505,22 @@ func (t *SpanAttribute) String() string {
 		return invalid
 	}
 }
+
+type RouteImportRequest struct {
+	TransportMode TransportMode
+	// Which attributes to return in the response.
+	// If not specified defaults to SummaryReturnAttribute.
+	Return []ReturnAttribute
+	// The time of departure.
+	// If not specified the current time is used.
+	// To not take time into account use DepartureTimeAny.
+	DepartureTime string
+	// Spans define which content attributes that are included in the response spans
+	Spans []SpanAttribute
+	// An array of GPS coordinates
+	Trace []GeoWaypoint
+}
+
+type RouteImportRequestBody struct {
+	Trace []GeoWaypoint `json:"trace"`
+}
