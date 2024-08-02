@@ -493,6 +493,7 @@ type SpanAttribute string
 const (
 	SpanAttributeNames    SpanAttribute = "names"
 	SpanAttributeMaxSpeed SpanAttribute = "maxSpeed"
+	SpanAttributeLength   SpanAttribute = "length"
 )
 
 func (t *SpanAttribute) String() string {
@@ -501,6 +502,8 @@ func (t *SpanAttribute) String() string {
 		return string(SpanAttributeNames)
 	case SpanAttributeMaxSpeed:
 		return string(SpanAttributeMaxSpeed)
+	case SpanAttributeLength:
+		return string(SpanAttributeLength)
 	default:
 		return invalid
 	}
