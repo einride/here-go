@@ -42,6 +42,8 @@ type CalculateMatrixRequest struct {
 	// Async flag requires the Client to poll the calculation results and finally requesting to download
 	// the calculation results.
 	Async Async
+	// The billing tag provides a way to track your platform usage across components which track usage and costs.
+	BillingTag string
 	// Body to pass to request to Here Maps API
 	Body *CalculateMatrixBody
 }
