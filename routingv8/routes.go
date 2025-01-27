@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -64,6 +65,29 @@ func (s *RoutingService) Routes(
 			}
 		}
 		values.Add("avoid[features]", strings.Join(areas, ","))
+	}
+	if req.Vehicle != nil {
+		if req.Vehicle.GrossWeight != 0 {
+			values.Add("vehicle[grossWeight]", strconv.Itoa(req.Vehicle.GrossWeight))
+		}
+		if req.Vehicle.TrailerCount != 0 {
+			values.Add("vehicle[trailerCount]", strconv.Itoa(req.Vehicle.TrailerCount))
+		}
+		if req.Vehicle.AxleCount != 0 {
+			values.Add("vehicle[axleCount]", strconv.Itoa(req.Vehicle.AxleCount))
+		}
+		if req.Vehicle.Height != 0 {
+			values.Add("vehicle[height]", strconv.Itoa(req.Vehicle.Height))
+		}
+		if req.Vehicle.Width != 0 {
+			values.Add("vehicle[width]", strconv.Itoa(req.Vehicle.Width))
+		}
+		if req.Vehicle.Length != 0 {
+			values.Add("vehicle[length]", strconv.Itoa(req.Vehicle.Length))
+		}
+		if req.Vehicle.Type != "" {
+			values.Add("vehicle[type]", req.Vehicle.Type.String())
+		}
 	}
 
 	r, err := s.Client.NewRequest(ctx, u, http.MethodGet, values.Encode(), nil)
