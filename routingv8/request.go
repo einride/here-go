@@ -60,6 +60,8 @@ type RoutesRequest struct {
 	DepartureTime string
 	// Spans define which content attributes that are included in the response spans
 	Spans []SpanAttribute
+	// Vehicle-specific parameters.
+	Vehicle *Vehicle
 }
 
 type ReturnAttribute string
@@ -526,4 +528,57 @@ type RouteImportRequest struct {
 
 type RouteImportRequestBody struct {
 	Trace []GeoWaypoint `json:"trace"`
+}
+
+type Vehicle struct {
+	// Gross vehicle weight, including trailers and shipped goods when loaded at capacity, specified in kilograms.
+	// Needs to be >=0.
+	// If unspecified, it will default to currentWeight.
+	// If neither parameter has a value specified, it will default to 0.
+	// Notes:
+	// - Supported in truck, bus, privateBus, car (Beta), taxi (Beta) transport modes.
+	// - Maximum weight for a car or taxi without a trailer is 4250 kg.
+	// - Maximum weight for a car or taxi with a trailer is 7550 kg.
+	GrossWeight int
+	// The number of trailers attached to the vehicle. Range: [0-255]. Default: 0.
+	// Maximum value when used with transportMode=car or transportMode=taxi is 1.
+	// Limitations: Considered for route calculation when transportMode is one of (truck, bus, privateBus).
+	// Considered for route calculation for restrictions, but not for speed limits, when transportMode is car or taxi.
+	TrailerCount int
+	// Specifies the total number of axles the vehicle has, i.e., axles on the base vehicle and any attached trailers.
+	// Range: [2-255].
+	// Note: Supported in truck, bus, privateBus, car (Beta), taxi (Beta) transport modes.
+	AxleCount int
+	// Vehicle height, specified in centimeters. Range: [0-5000].
+	// Note: Supported in truck, bus, privateBus, car (Beta), taxi (Beta) transport modes.
+	Height int
+	// Vehicle width, specified in centimeters. Range: [0-5000].
+	// Note: Supported in truck, bus, privateBus, car (Beta), taxi (Beta) transport modes.
+	Width int
+	// Vehicle length, specified in centimeters. Range: [0-30000].
+	// Note: Supported in truck, bus, privateBus, car (Beta), taxi (Beta) transport modes.
+	Length int
+	// Specifies the type of the vehicle. Limitations: only valid for transportMode=truck.
+	Type VehicleType
+}
+
+type VehicleType string
+
+const (
+	// A truck on a single frame with a permanently attached cargo area.
+	// Note: default value when truck routing mode is used.
+	VehicleTypeStraightTruck VehicleType = "StraightTruck"
+	// A towing vehicle that can pull one or more semi-trailers (also known as a semi-truck).
+	VehicleTypeTractor VehicleType = "Tractor"
+)
+
+func (t *VehicleType) String() string {
+	switch *t {
+	case VehicleTypeStraightTruck:
+		return string(VehicleTypeStraightTruck)
+	case VehicleTypeTractor:
+		return string(VehicleTypeTractor)
+	default:
+		return invalid
+	}
 }

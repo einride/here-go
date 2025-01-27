@@ -209,6 +209,27 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 			},
 			errStr: "spans parameter also requires that the polyline option is set in the return parameter",
 		},
+		{
+			name: "with vehicle",
+			request: &routingv8.RoutesRequest{
+				Origin:        origin,
+				Destination:   destination,
+				TransportMode: routingv8.TransportModeTruck,
+				Vehicle: &routingv8.Vehicle{
+					GrossWeight:  10000,
+					TrailerCount: 1,
+					AxleCount:    2,
+					Height:       400,
+					Width:        250,
+					Length:       1200,
+					Type:         routingv8.VehicleTypeTractor,
+				},
+			},
+			expected: "destination=59.337492%2C18.063672&origin=57.707752%2C11.949767&return=summary" +
+				"&transportMode=truck&vehicle%5BaxleCount%5D=2&vehicle%5BgrossWeight%5D=10000&vehicle%5Bheight%5D=400" +
+				"&vehicle%5Blength%5D=1200&vehicle%5BtrailerCount%5D=1&vehicle%5Btype%5D=Tractor" +
+				"&vehicle%5Bwidth%5D=250",
+		},
 	} {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
