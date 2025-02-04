@@ -524,6 +524,8 @@ type RouteImportRequest struct {
 	Spans []SpanAttribute
 	// An array of GPS coordinates
 	Trace []GeoWaypoint
+	// Vehicle-specific parameters.
+	Vehicle *Vehicle
 }
 
 type RouteImportRequestBody struct {

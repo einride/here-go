@@ -415,6 +415,38 @@ func TestRoutingervice_RouteImport_QueryParams(t *testing.T) {
 			expectedBody:      traceBody,
 		},
 		{
+			name: "with vehicle",
+			request: &routingv8.RouteImportRequest{
+				Trace: []routingv8.GeoWaypoint{
+					origin,
+					destination,
+				},
+				TransportMode: routingv8.TransportModeCar,
+				Return: []routingv8.ReturnAttribute{
+					routingv8.SummaryReturnAttribute,
+					routingv8.PolylineReturnAttribute,
+				},
+				Spans: []routingv8.SpanAttribute{
+					routingv8.SpanAttributeNames,
+					routingv8.SpanAttributeMaxSpeed,
+				},
+				Vehicle: &routingv8.Vehicle{
+					GrossWeight:  10000,
+					TrailerCount: 1,
+					AxleCount:    2,
+					Height:       400,
+					Width:        250,
+					Length:       1200,
+					Type:         routingv8.VehicleTypeTractor,
+				},
+			},
+			expectedURLParams: "return=summary%2Cpolyline&spans=names%2CmaxSpeed&transportMode=car" +
+				"&vehicle%5BaxleCount%5D=2&vehicle%5BgrossWeight%5D=10000&vehicle%5Bheight%5D=400" +
+				"&vehicle%5Blength%5D=1200&vehicle%5BtrailerCount%5D=1&vehicle%5Btype%5D=Tractor" +
+				"&vehicle%5Bwidth%5D=250",
+			expectedBody: traceBody,
+		},
+		{
 			name: "trace with too few point",
 			request: &routingv8.RouteImportRequest{
 				Trace: []routingv8.GeoWaypoint{
