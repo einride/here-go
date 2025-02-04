@@ -6,11 +6,17 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 )
+
+const billingTagPattern = "^[A-Za-z0-9][A-Za-z0-9_-]{2,14}[A-Za-z0-9]$"
 
 func (c *CalculateMatrixRequest) QueryString() string {
 	values := make(url.Values)
 	values.Add("async", c.Async.String())
+	if c.BillingTag != "" {
+		values.Add("billingTag", c.BillingTag)
+	}
 	return values.Encode()
 }
 
@@ -27,6 +33,15 @@ func (s *MatrixService) CalculateMatrix(
 			err = fmt.Errorf("calculate matrix: %v", err)
 		}
 	}()
+	if req.BillingTag != "" {
+		matched, err := regexp.MatchString(billingTagPattern, req.BillingTag)
+		if err != nil {
+			return nil, err
+		}
+		if !matched {
+			return nil, fmt.Errorf("invalid billing tag")
+		}
+	}
 	u, err := s.URL.Parse("matrix")
 	if err != nil {
 		return nil, err
