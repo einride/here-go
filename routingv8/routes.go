@@ -67,27 +67,7 @@ func (s *RoutingService) Routes(
 		values.Add("avoid[features]", strings.Join(areas, ","))
 	}
 	if req.Vehicle != nil {
-		if req.Vehicle.GrossWeight != 0 {
-			values.Add("vehicle[grossWeight]", strconv.Itoa(req.Vehicle.GrossWeight))
-		}
-		if req.Vehicle.TrailerCount != 0 {
-			values.Add("vehicle[trailerCount]", strconv.Itoa(req.Vehicle.TrailerCount))
-		}
-		if req.Vehicle.AxleCount != 0 {
-			values.Add("vehicle[axleCount]", strconv.Itoa(req.Vehicle.AxleCount))
-		}
-		if req.Vehicle.Height != 0 {
-			values.Add("vehicle[height]", strconv.Itoa(req.Vehicle.Height))
-		}
-		if req.Vehicle.Width != 0 {
-			values.Add("vehicle[width]", strconv.Itoa(req.Vehicle.Width))
-		}
-		if req.Vehicle.Length != 0 {
-			values.Add("vehicle[length]", strconv.Itoa(req.Vehicle.Length))
-		}
-		if req.Vehicle.Type != "" {
-			values.Add("vehicle[type]", req.Vehicle.Type.String())
-		}
+		addVehicleParameters(values, req.Vehicle)
 	}
 
 	r, err := s.Client.NewRequest(ctx, u, http.MethodGet, values.Encode(), nil)
@@ -99,6 +79,30 @@ func (s *RoutingService) Routes(
 		return nil, err
 	}
 	return &resp, nil
+}
+
+func addVehicleParameters(values url.Values, vehicle *Vehicle) {
+	if vehicle.GrossWeight != 0 {
+		values.Add("vehicle[grossWeight]", strconv.Itoa(vehicle.GrossWeight))
+	}
+	if vehicle.TrailerCount != 0 {
+		values.Add("vehicle[trailerCount]", strconv.Itoa(vehicle.TrailerCount))
+	}
+	if vehicle.AxleCount != 0 {
+		values.Add("vehicle[axleCount]", strconv.Itoa(vehicle.AxleCount))
+	}
+	if vehicle.Height != 0 {
+		values.Add("vehicle[height]", strconv.Itoa(vehicle.Height))
+	}
+	if vehicle.Width != 0 {
+		values.Add("vehicle[width]", strconv.Itoa(vehicle.Width))
+	}
+	if vehicle.Length != 0 {
+		values.Add("vehicle[length]", strconv.Itoa(vehicle.Length))
+	}
+	if vehicle.Type != "" {
+		values.Add("vehicle[type]", vehicle.Type.String())
+	}
 }
 
 // RouteImport returns a route from a sequence of trace points.
@@ -145,6 +149,9 @@ func (s *RoutingService) RouteImport(
 			spanStrings = append(spanStrings, string(span))
 		}
 		values.Add("spans", strings.Join(spanStrings, ","))
+	}
+	if req.Vehicle != nil {
+		addVehicleParameters(values, req.Vehicle)
 	}
 
 	bytes, err := json.Marshal(&RouteImportRequestBody{
