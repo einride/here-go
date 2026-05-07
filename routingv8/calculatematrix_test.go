@@ -84,3 +84,131 @@ func TestMatrixService_CalculateMatrix(t *testing.T) {
 	assert.NilError(t, err)
 	assert.DeepEqual(t, &exp, got)
 }
+
+func TestCalculateMatrixBody_MarshalJSON(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name string
+		body routingv8.CalculateMatrixBody
+		want string
+	}{
+		{
+			name: "bare coordinates omit snap hints",
+			body: routingv8.CalculateMatrixBody{
+				Origins:      []*routingv8.GeoWaypoint{{Lat: 57.707752, Long: 11.949767}},
+				Destinations: []*routingv8.GeoWaypoint{{Lat: 59.337492, Long: 18.063672}},
+				RegionDefinition: routingv8.RegionDefinition{
+					Type: routingv8.RegionTypeWorld,
+				},
+				TransportMode: routingv8.TransportModeTruck,
+			},
+			want: `{` +
+				`"origins":[{"lat":57.707752,"lng":11.949767}],` +
+				`"destinations":[{"lat":59.337492,"lng":18.063672}],` +
+				`"regionDefinition":{"type":"world"},` +
+				`"transportMode":"truck"` +
+				`}`,
+		},
+		{
+			name: "snap hints emit radius and radiusPenalty",
+			body: routingv8.CalculateMatrixBody{
+				Origins: []*routingv8.GeoWaypoint{
+					{Lat: 57.707752, Long: 11.949767, Radius: 200, RadiusPenalty: 5000},
+				},
+				Destinations: []*routingv8.GeoWaypoint{
+					{Lat: 59.337492, Long: 18.063672, Radius: 200, RadiusPenalty: 5000},
+				},
+				RegionDefinition: routingv8.RegionDefinition{
+					Type: routingv8.RegionTypeWorld,
+				},
+				TransportMode: routingv8.TransportModeTruck,
+			},
+			want: `{` +
+				`"origins":[{"lat":57.707752,"lng":11.949767,"radius":200,"radiusPenalty":5000}],` +
+				`"destinations":[{"lat":59.337492,"lng":18.063672,"radius":200,"radiusPenalty":5000}],` +
+				`"regionDefinition":{"type":"world"},` +
+				`"transportMode":"truck"` +
+				`}`,
+		},
+		{
+			name: "snapRadius emits snapRadius",
+			body: routingv8.CalculateMatrixBody{
+				Origins: []*routingv8.GeoWaypoint{
+					{Lat: 57.707752, Long: 11.949767, SnapRadius: 50},
+				},
+				Destinations: []*routingv8.GeoWaypoint{
+					{Lat: 59.337492, Long: 18.063672, SnapRadius: 50},
+				},
+				RegionDefinition: routingv8.RegionDefinition{
+					Type: routingv8.RegionTypeWorld,
+				},
+				TransportMode: routingv8.TransportModeTruck,
+			},
+			want: `{` +
+				`"origins":[{"lat":57.707752,"lng":11.949767,"snapRadius":50}],` +
+				`"destinations":[{"lat":59.337492,"lng":18.063672,"snapRadius":50}],` +
+				`"regionDefinition":{"type":"world"},` +
+				`"transportMode":"truck"` +
+				`}`,
+		},
+		{
+			name: "course hints emit course and minCourseDistance",
+			body: routingv8.CalculateMatrixBody{
+				Origins: []*routingv8.GeoWaypoint{
+					{Lat: 57.707752, Long: 11.949767, Course: 90, MinCourseDistance: 500},
+				},
+				Destinations: []*routingv8.GeoWaypoint{
+					{Lat: 59.337492, Long: 18.063672},
+				},
+				RegionDefinition: routingv8.RegionDefinition{
+					Type: routingv8.RegionTypeWorld,
+				},
+				TransportMode: routingv8.TransportModeTruck,
+			},
+			want: `{` +
+				`"origins":[{"lat":57.707752,"lng":11.949767,"course":90,"minCourseDistance":500}],` +
+				`"destinations":[{"lat":59.337492,"lng":18.063672}],` +
+				`"regionDefinition":{"type":"world"},` +
+				`"transportMode":"truck"` +
+				`}`,
+		},
+		{
+			name: "sideOfStreetHint embeds match",
+			body: routingv8.CalculateMatrixBody{
+				Origins: []*routingv8.GeoWaypoint{
+					{
+						Lat:  52.511496,
+						Long: 13.304140,
+						SideOfStreetHint: &routingv8.SideOfStreetHint{
+							Lat:   52.512149,
+							Long:  13.304076,
+							Match: routingv8.SideOfStreetMatchAlways,
+						},
+					},
+				},
+				Destinations: []*routingv8.GeoWaypoint{
+					{Lat: 59.337492, Long: 18.063672},
+				},
+				RegionDefinition: routingv8.RegionDefinition{
+					Type: routingv8.RegionTypeWorld,
+				},
+				TransportMode: routingv8.TransportModeTruck,
+			},
+			want: `{` +
+				`"origins":[{"lat":52.511496,"lng":13.30414,` +
+				`"sideOfStreetHint":{"lat":52.512149,"lng":13.304076,"match":"always"}}],` +
+				`"destinations":[{"lat":59.337492,"lng":18.063672}],` +
+				`"regionDefinition":{"type":"world"},` +
+				`"transportMode":"truck"` +
+				`}`,
+		},
+	} {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got, err := json.Marshal(&tt.body)
+			assert.NilError(t, err)
+			assert.Equal(t, tt.want, string(got))
+		})
+	}
+}

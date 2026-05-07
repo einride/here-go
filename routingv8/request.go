@@ -79,7 +79,66 @@ type GeoWaypoint struct {
 	Elevation float64 `json:"elv,omitempty"`
 	Lat       float64 `json:"lat"`
 	Long      float64 `json:"lng"`
+	// Radius instructs the router to consider all places within the given
+	// radius as potential candidates for matching the waypoint. Specified
+	// in meters. Range: [0-200]. Values higher than 200 meters are not
+	// supported. Cannot be combined with SnapRadius.
+	Radius int `json:"radius,omitempty"`
+	// RadiusPenalty is a percentage applied to candidates within Radius
+	// based on their air distance to the waypoint, where 100 is just the
+	// cost of the air distance and 200 is twice the cost. The penalty
+	// must be chosen so that, when multiplied by the radius, the result
+	// is less than or equal to 7200; values up to and including 10000 are
+	// accepted regardless. Range: [0-10000]. Cannot be combined with
+	// SnapRadius.
+	//
+	// Alpha: This parameter is in development. It may not be stable and
+	// is subject to change.
+	RadiusPenalty int `json:"radiusPenalty,omitempty"`
+	// SnapRadius instructs the router to match the waypoint, within the
+	// specified radius, to the most "significant" road, sorting candidates
+	// by significance (e.g. highway > national road > city road).
+	// Specified in meters. Range: [0-1000000]. Cannot be combined with
+	// Radius or RadiusPenalty.
+	SnapRadius int `json:"snapRadius,omitempty"`
+	// Course is the direction in degrees clockwise from north (0 is
+	// north) from which this waypoint should be approached or in which it
+	// should be left. Range: [0-359]. Values outside the range are
+	// wrapped to the range.
+	Course float64 `json:"course,omitempty"`
+	// MinCourseDistance instructs the routing service to try to find a
+	// route that avoids actions for the indicated distance. For example,
+	// if the origin is determined by a moving vehicle, the user might not
+	// have time to react to early actions. Specified in meters. Values
+	// greater than 2000 meters will be capped at 2000 meters.
+	MinCourseDistance int `json:"minCourseDistance,omitempty"`
+	// SideOfStreetHint is a point next to the street (e.g. a POI) that
+	// indicates which side of the street should be preferred for this
+	// waypoint when the street has dividers.
+	SideOfStreetHint *SideOfStreetHint `json:"sideOfStreetHint,omitempty"`
 }
+
+// SideOfStreetHint is a hint as to which side of the street should be
+// preferred for a waypoint. The hint should be a point next to the
+// street, e.g. a POI.
+type SideOfStreetHint struct {
+	Lat  float64 `json:"lat"`
+	Long float64 `json:"lng"`
+	// Match determines how the side-of-street hint should be handled.
+	// Defaults to SideOfStreetMatchOnlyIfDivided when unset.
+	Match SideOfStreetMatch `json:"match,omitempty"`
+}
+
+// SideOfStreetMatch determines how a SideOfStreetHint should be handled.
+type SideOfStreetMatch string
+
+const (
+	// SideOfStreetMatchAlways always uses the side-of-street hint.
+	SideOfStreetMatchAlways SideOfStreetMatch = "always"
+	// SideOfStreetMatchOnlyIfDivided only uses the side-of-street hint
+	// on divided roads. This is HERE's default behavior.
+	SideOfStreetMatchOnlyIfDivided SideOfStreetMatch = "onlyIfDivided"
+)
 
 // DepartureTimeAny enforces non time-aware routing.
 const DepartureTimeAny = "any"
