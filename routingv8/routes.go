@@ -45,7 +45,9 @@ func (s *RoutingService) Routes(
 	values.Add("destination", fmt.Sprintf("%v,%v", req.Destination.Lat, req.Destination.Long))
 	if len(req.Spans) > 0 {
 		if !returnContains(req.Return, PolylineReturnAttribute) {
-			return nil, errors.New("spans parameter also requires that the polyline option is set in the return parameter")
+			return nil, errors.New(
+				"spans parameter also requires that the polyline option is set in the return parameter",
+			)
 		}
 		spanStrings := make([]string, 0, len(req.Spans))
 		for _, span := range req.Spans {
@@ -142,7 +144,9 @@ func (s *RoutingService) RouteImport(
 	values.Add("transportMode", tm)
 	if len(req.Spans) > 0 {
 		if !returnContains(req.Return, PolylineReturnAttribute) {
-			return nil, errors.New("spans parameter also requires that the polyline option is set in the return parameter")
+			return nil, errors.New(
+				"spans parameter also requires that the polyline option is set in the return parameter",
+			)
 		}
 		spanStrings := make([]string, 0, len(req.Spans))
 		for _, span := range req.Spans {

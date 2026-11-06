@@ -41,13 +41,19 @@ func TestBatchGeocodingService_BatchGeocode(t *testing.T) {
 		func(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
-			httpClient := BatchGeocodingMock{responseBody: geocodingsearchv7.BatchGeocoderResponse{}, responseStatus: 200}
+			httpClient := BatchGeocodingMock{
+				responseBody:   geocodingsearchv7.BatchGeocoderResponse{},
+				responseStatus: 200,
+			}
 			routingClient := geocodingsearchv7.NewClient(&httpClient)
 
-			_, err := routingClient.BatchGeocoding.BatchGeocoderUpload(ctx, &geocodingsearchv7.BatchGeocoderUploadRequest{
-				Addresses: nil,
-				Queries:   nil,
-			})
+			_, err := routingClient.BatchGeocoding.BatchGeocoderUpload(
+				ctx,
+				&geocodingsearchv7.BatchGeocoderUploadRequest{
+					Addresses: nil,
+					Queries:   nil,
+				},
+			)
 			assert.ErrorContains(t, err, "InvalidArgument")
 		},
 	)
@@ -56,13 +62,19 @@ func TestBatchGeocodingService_BatchGeocode(t *testing.T) {
 		func(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
-			httpClient := BatchGeocodingMock{responseBody: geocodingsearchv7.BatchGeocoderResponse{}, responseStatus: 200}
+			httpClient := BatchGeocodingMock{
+				responseBody:   geocodingsearchv7.BatchGeocoderResponse{},
+				responseStatus: 200,
+			}
 			routingClient := geocodingsearchv7.NewClient(&httpClient)
 
-			_, err := routingClient.BatchGeocoding.BatchGeocoderUpload(ctx, &geocodingsearchv7.BatchGeocoderUploadRequest{
-				Addresses: []*geocodingsearchv7.AddressRequest{},
-				Queries:   []*geocodingsearchv7.QueryString{},
-			})
+			_, err := routingClient.BatchGeocoding.BatchGeocoderUpload(
+				ctx,
+				&geocodingsearchv7.BatchGeocoderUploadRequest{
+					Addresses: []*geocodingsearchv7.AddressRequest{},
+					Queries:   []*geocodingsearchv7.QueryString{},
+				},
+			)
 			assert.ErrorContains(t, err, "InvalidArgument")
 		},
 	)
@@ -76,12 +88,18 @@ func TestBatchGeocodingService_BatchGeocodeStatus(t *testing.T) {
 		func(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
-			httpClient := BatchGeocodingMock{responseBody: geocodingsearchv7.BatchGeocoderResponse{}, responseStatus: 200}
+			httpClient := BatchGeocodingMock{
+				responseBody:   geocodingsearchv7.BatchGeocoderResponse{},
+				responseStatus: 200,
+			}
 			routingClient := geocodingsearchv7.NewClient(&httpClient)
 
-			_, err := routingClient.BatchGeocoding.BatchGeocoderStatus(ctx, &geocodingsearchv7.BatchGeocoderStatusRequest{
-				RequestID: "",
-			})
+			_, err := routingClient.BatchGeocoding.BatchGeocoderStatus(
+				ctx,
+				&geocodingsearchv7.BatchGeocoderStatusRequest{
+					RequestID: "",
+				},
+			)
 			assert.ErrorContains(t, err, "InvalidArgument")
 		},
 	)
@@ -95,7 +113,10 @@ func TestBatchGeocodingService_BatchGeocodeDownload(t *testing.T) {
 		func(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
-			httpClient := BatchGeocodingMock{responseBody: geocodingsearchv7.BatchGeocoderResponse{}, responseStatus: 200}
+			httpClient := BatchGeocodingMock{
+				responseBody:   geocodingsearchv7.BatchGeocoderResponse{},
+				responseStatus: 200,
+			}
 			routingClient := geocodingsearchv7.NewClient(&httpClient)
 
 			err := routingClient.BatchGeocoding.BatchGeocoderDownload(
