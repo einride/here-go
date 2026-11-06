@@ -81,7 +81,7 @@ func (w *GeoWaypoint) QueryString() string {
 	}
 	if w.Heading > 0 {
 		builder.WriteString(";")
-		builder.WriteString(fmt.Sprintf("%f", w.Heading))
+		fmt.Fprintf(&builder, "%f", w.Heading)
 	}
 	return builder.String()
 }

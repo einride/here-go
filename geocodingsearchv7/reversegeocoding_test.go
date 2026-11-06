@@ -41,7 +41,10 @@ func TestReverseGeocodingService_ReverseGeocoding(t *testing.T) {
 		"when geoposition is missing from request, then return invalid argument",
 		func(t *testing.T) {
 			t.Parallel()
-			httpClient := ReverseGeocodingMock{responseBody: geocodingsearchv7.ReverseGeocodingResponse{}, responseStatus: 200}
+			httpClient := ReverseGeocodingMock{
+				responseBody:   geocodingsearchv7.ReverseGeocodingResponse{},
+				responseStatus: 200,
+			}
 			routingClient := geocodingsearchv7.NewClient(&httpClient)
 
 			_, err := routingClient.ReverseGeocoding.ReverseGeocoding(ctx, &geocodingsearchv7.ReverseGeocodingRequest{})
