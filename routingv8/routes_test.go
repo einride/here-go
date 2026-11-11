@@ -231,7 +231,6 @@ func TestRoutingervice_Routes_QueryParams(t *testing.T) {
 				"&vehicle%5Bwidth%5D=250",
 		},
 	} {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client := RoutesMock{}
@@ -475,7 +474,6 @@ func TestRoutingervice_RouteImport_QueryParams(t *testing.T) {
 			errStr: "spans parameter also requires that the polyline option is set in the return parameter",
 		},
 	} {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client := RoutesMock{}

@@ -52,7 +52,6 @@ func TestRouteError(t *testing.T) {
 			expectedErrorString: "Response: {} StatusCode: 0",
 		},
 	} {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, tt.responseError.Error(), tt.expectedErrorString)
 		})
