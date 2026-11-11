@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Setup Sage
         uses: einride/sage/actions/setup@master
+        with:
+          go-version-file: .sage/go.mod
+          check-latest: true
 
       - name: Make
         run: make
